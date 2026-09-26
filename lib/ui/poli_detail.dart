@@ -102,13 +102,13 @@ class _PoliDetailState extends State<PoliDetail> {
                   padding: const EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF0F172A).withValues(alpha: 0.03),
+                        color: Colors.black.withValues(alpha: 0.03),
                         blurRadius: 12,
-                        offset: const Offset(0, 4),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -122,28 +122,28 @@ class _PoliDetailState extends State<PoliDetail> {
                             "INFORMASI POLIKLINIK",
                             style: TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF64748B),
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF8E8E93),
                               letterSpacing: 0.6,
                             ),
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withValues(alpha: 0.1),
+                              color: const Color(0xFF34C759).withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(Icons.check_circle_rounded, size: 12, color: Color(0xFF10B981)),
+                                Icon(Icons.check_circle_rounded, size: 12, color: Color(0xFF34C759)),
                                 SizedBox(width: 4),
                                 Text(
                                   "Pelayanan Aktif",
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xFF10B981),
+                                    color: Color(0xFF34C759),
                                   ),
                                 ),
                               ],
@@ -152,7 +152,7 @@ class _PoliDetailState extends State<PoliDetail> {
                         ],
                       ),
                       const SizedBox(height: 14),
-                      const Divider(height: 1, color: Color(0xFFE2E8F0)),
+                      const Divider(height: 1, color: Color(0xFFE5E5EA)),
                       const SizedBox(height: 16),
                       Row(
                         children: [
@@ -161,7 +161,7 @@ class _PoliDetailState extends State<PoliDetail> {
                             height: 54,
                             decoration: BoxDecoration(
                               color: meta.backgroundColor,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(14),
                             ),
                             alignment: Alignment.center,
                             child: Icon(
@@ -199,17 +199,17 @@ class _PoliDetailState extends State<PoliDetail> {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      const Divider(height: 1, color: Color(0xFFE2E8F0)),
+                      const Divider(height: 1, color: Color(0xFFE5E5EA)),
                       const SizedBox(height: 14),
                       Row(
                         children: [
-                          const Icon(Icons.location_on_outlined, size: 16, color: Color(0xFF64748B)),
+                          const Icon(Icons.location_on_outlined, size: 16, color: Color(0xFF8E8E93)),
                           const SizedBox(width: 6),
                           Text(
                             meta.location,
                             style: const TextStyle(
                               fontSize: 13,
-                              color: Color(0xFF475569),
+                              color: Color(0xFF3C3C43),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -218,7 +218,7 @@ class _PoliDetailState extends State<PoliDetail> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF1F5F9),
+                                color: const Color(0xFFF2F2F7),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
@@ -226,7 +226,7 @@ class _PoliDetailState extends State<PoliDetail> {
                                 style: const TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xFF64748B),
+                                  color: Color(0xFF8E8E93),
                                 ),
                               ),
                             ),

@@ -255,33 +255,50 @@ class _AntrianPageState extends State<AntrianPage>
               ),
             ),
 
-            // Search Bar (iOS style)
+            // Search Bar (iOS Cupertino style)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
               child: Container(
-                height: 44,
+                height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
+                  color: const Color(0xFFE3E3E8),
+                  borderRadius: BorderRadius.circular(11),
                 ),
                 child: TextField(
                   controller: _searchCtrl,
-                  style: const TextStyle(fontSize: 14, color: Color(0xFF1C1C1E)),
+                  style: const TextStyle(
+                    fontSize: 14.5,
+                    color: Color(0xFF0F172A),
+                    letterSpacing: -0.2,
+                  ),
+                  textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
+                    isDense: true,
                     hintText: "Cari nama pasien, no antrian, poli...",
-                    hintStyle: const TextStyle(color: Color(0xFF8E8E93), fontSize: 13.5),
-                    prefixIcon:
-                        const Icon(Icons.search_rounded, color: Color(0xFF8E8E93), size: 20),
+                    hintStyle: const TextStyle(
+                      color: Color(0xFF8E8E93),
+                      fontSize: 13.5,
+                      letterSpacing: -0.2,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.search_rounded,
+                      color: Color(0xFF8E8E93),
+                      size: 20,
+                    ),
                     suffixIcon: _searchCtrl.text.isNotEmpty
                         ? IconButton(
-                            icon: const Icon(Icons.cancel_rounded,
-                                color: Color(0xFF8E8E93), size: 18),
+                            icon: const Icon(
+                              Icons.cancel_rounded,
+                              color: Color(0xFF8E8E93),
+                              size: 18,
+                            ),
                             onPressed: () => _searchCtrl.clear(),
                           )
                         : null,
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   ),
                 ),
               ),

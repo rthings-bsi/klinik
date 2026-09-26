@@ -210,7 +210,7 @@ class _LoginState extends State<Login> {
         suffixIcon: IconButton(
           icon: Icon(
             _obscurePassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-            color: const Color(0xFF64748B),
+            color: const Color(0xFF8E8E93),
           ),
           onPressed: () {
             setState(() {
@@ -264,7 +264,7 @@ class _LoginState extends State<Login> {
                     showDialog(
                       context: context,
                       builder: (dialogCtx) => AlertDialog(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                         title: const Text("Gagal Masuk"),
                         content: const Text("Username atau password yang dimasukkan salah."),
                         actions: [

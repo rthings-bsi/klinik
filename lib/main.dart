@@ -36,13 +36,39 @@ class KlinikApp extends StatelessWidget {
           elevation: 0,
           scrolledUnderElevation: 0.5,
           centerTitle: true,
-          backgroundColor: Color(0xFF0F766E),
-          foregroundColor: Colors.white,
+          backgroundColor: Colors.white,
+          foregroundColor: Color(0xFF0F172A),
+          surfaceTintColor: Colors.transparent,
+          shape: Border(
+            bottom: BorderSide(
+              color: Color(0xFFE5E5EA),
+              width: 0.8,
+            ),
+          ),
+          iconTheme: IconThemeData(
+            color: Color(0xFF0F766E),
+          ),
+          actionsIconTheme: IconThemeData(
+            color: Color(0xFF0F766E),
+          ),
           titleTextStyle: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
             letterSpacing: -0.4,
-            color: Colors.white,
+            color: Color(0xFF0F172A),
+          ),
+        ),
+        dialogTheme: DialogThemeData(
+          backgroundColor: Colors.white,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          titleTextStyle: const TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.4,
+            color: Color(0xFF0F172A),
           ),
         ),
         cardTheme: CardThemeData(

@@ -50,7 +50,7 @@ class _PoliPageState extends State<PoliPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: const Color(0xFFF2F2F7),
       appBar: AppBar(
         title: Text(_isAdmin ? "Data Poli" : "Info Poliklinik"),
         centerTitle: true,
@@ -91,16 +91,12 @@ class _PoliPageState extends State<PoliPage>
           // Sleek Minimalist Search Bar Container
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
             child: Container(
-              height: 46,
+              height: 40,
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(
-                  color: const Color(0xFFE2E8F0),
-                  width: 1.0,
-                ),
+                color: const Color(0xFFE3E3E8),
+                borderRadius: BorderRadius.circular(11),
               ),
               child: TextField(
                 controller: _searchController,
@@ -115,12 +111,12 @@ class _PoliPageState extends State<PoliPage>
                   hintText: "Cari nama poli atau spesialis medis...",
                   hintStyle: const TextStyle(
                     fontSize: 13.5,
-                    color: Color(0xFF94A3B8),
+                    color: Color(0xFF8E8E93),
                     letterSpacing: -0.2,
                   ),
                   prefixIcon: const Icon(
                     Icons.search_rounded,
-                    color: Color(0xFF0F766E),
+                    color: Color(0xFF8E8E93),
                     size: 20,
                   ),
                   suffixIcon: _searchQuery.isNotEmpty
@@ -128,7 +124,7 @@ class _PoliPageState extends State<PoliPage>
                           icon: const Icon(
                             Icons.cancel_rounded,
                             size: 18,
-                            color: Color(0xFF94A3B8),
+                            color: Color(0xFF8E8E93),
                           ),
                           onPressed: () {
                             _searchController.clear();
@@ -139,7 +135,7 @@ class _PoliPageState extends State<PoliPage>
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -149,7 +145,7 @@ class _PoliPageState extends State<PoliPage>
               ),
             ),
           ),
-          const Divider(height: 0.8, color: Color(0xFFE2E8F0)),
+          const Divider(height: 0.8, color: Color(0xFFE5E5EA)),
 
           // Main List View
           Expanded(
@@ -264,7 +260,7 @@ class _PoliPageState extends State<PoliPage>
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: const BoxDecoration(
-                              color: Color(0xFFF1F5F9),
+                              color: Color(0xFFE5E5EA),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(

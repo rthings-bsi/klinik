@@ -128,43 +128,58 @@ class _PegawaiPageState extends State<PegawaiPage>
           // iOS Search Bar
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: "Cari nama pegawai atau NIP...",
-                hintStyle: const TextStyle(fontSize: 14, color: Color(0xFF8E8E93)),
-                prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF0F766E), size: 20),
-                suffixIcon: _searchQuery.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear_rounded, size: 18, color: Color(0xFF8E8E93)),
-                        onPressed: () {
-                          _searchController.clear();
-                          setState(() => _searchQuery = "");
-                        },
-                      )
-                    : null,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                filled: true,
-                fillColor: const Color(0xFFF2F2F7),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFF0F766E), width: 1.2),
-                ),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                color: const Color(0xFFE3E3E8),
+                borderRadius: BorderRadius.circular(11),
               ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value.toLowerCase().trim();
-                });
-              },
+              child: TextField(
+                controller: _searchController,
+                style: const TextStyle(
+                  fontSize: 14.5,
+                  color: Color(0xFF0F172A),
+                  letterSpacing: -0.2,
+                ),
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: "Cari nama pegawai atau NIP...",
+                  hintStyle: const TextStyle(
+                    fontSize: 13.5,
+                    color: Color(0xFF8E8E93),
+                    letterSpacing: -0.2,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.search_rounded,
+                    color: Color(0xFF8E8E93),
+                    size: 20,
+                  ),
+                  suffixIcon: _searchQuery.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(
+                            Icons.cancel_rounded,
+                            size: 18,
+                            color: Color(0xFF8E8E93),
+                          ),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() => _searchQuery = "");
+                          },
+                        )
+                      : null,
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value.toLowerCase().trim();
+                  });
+                },
+              ),
             ),
           ),
           const Divider(height: 0.8, color: Color(0xFFE5E5EA)),

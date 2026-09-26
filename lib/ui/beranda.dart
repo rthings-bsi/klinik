@@ -73,7 +73,7 @@ class _BerandaState extends State<Beranda> {
   Widget build(BuildContext context) {
     if (!_isRoleLoaded) {
       return const Scaffold(
-        backgroundColor: Color(0xFFF8FAFC),
+        backgroundColor: Color(0xFFF2F2F7),
         body: Center(
           child: CircularProgressIndicator(color: Color(0xFF0F766E)),
         ),
@@ -147,7 +147,7 @@ class _BerandaState extends State<Beranda> {
           ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: const Color(0xFFF2F2F7),
       body: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
@@ -390,7 +390,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                 width: 38,
                 height: 4.5,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE2E8F0),
+                  color: const Color(0xFFE5E5EA),
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),
@@ -437,7 +437,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF1F5F9),
+                          color: const Color(0xFFF2F2F7),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -455,7 +455,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
               ],
             ),
             const SizedBox(height: 20),
-            const Divider(height: 1, color: Color(0xFFE2E8F0)),
+            const Divider(height: 1, color: Color(0xFFE5E5EA)),
             const SizedBox(height: 16),
             AnimatedPressable(
               borderRadius: BorderRadius.circular(14),
@@ -551,7 +551,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: const Color(0xFFF2F2F7),
       body: SafeArea(
         bottom: false,
         child: RefreshIndicator(
@@ -577,7 +577,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+                          border: Border.all(color: const Color(0xFFE5E5EA), width: 1),
                           boxShadow: [
                             BoxShadow(
                               color: const Color(0xFF0F172A).withValues(alpha: 0.04),
@@ -646,7 +646,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+                          border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
                         ),
                         child: IconButton(
                           padding: EdgeInsets.zero,
@@ -706,7 +706,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+                      border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -805,7 +805,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [Color(0xFFF0FDFA), Color(0xFFF8FAFC)],
+                        colors: [Color(0xFFF0FDFA), Color(0xFFF2F2F7)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -945,7 +945,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+                      border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
                     ),
                     child: Row(
                       children: [
@@ -977,7 +977,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF1F5F9),
+                            color: const Color(0xFFF2F2F7),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text(
@@ -1234,7 +1234,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+        border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF0F172A).withValues(alpha: 0.04),
@@ -1291,7 +1291,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
             ],
           ),
           const SizedBox(height: 14),
-          const Divider(height: 1, color: Color(0xFFE2E8F0)),
+          const Divider(height: 1, color: Color(0xFFE5E5EA)),
           const SizedBox(height: 14),
           if (hasTicket) ...[
             Row(
@@ -1351,9 +1351,9 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
               child: Container(
                 height: 42,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5F9),
+                  color: const Color(0xFFF2F2F7),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+                  border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
                 ),
                 alignment: Alignment.center,
                 child: const Row(
@@ -1552,7 +1552,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+              border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
               boxShadow: [
                 BoxShadow(
                   color: const Color(0xFF0F172A).withValues(alpha: 0.02),
@@ -1730,7 +1730,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+          border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
           boxShadow: [
             BoxShadow(
               color: const Color(0xFF0F172A).withValues(alpha: 0.02),
@@ -1807,7 +1807,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+          border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
         ),
         alignment: Alignment.center,
         child: const Text(
@@ -1835,7 +1835,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+                border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
                 boxShadow: [
                   BoxShadow(
                     color: const Color(0xFF0F172A).withValues(alpha: 0.02),

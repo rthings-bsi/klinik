@@ -33,13 +33,13 @@ class PoliItem extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0F172A).withValues(alpha: 0.03),
+                color: Colors.black.withValues(alpha: 0.03),
                 blurRadius: 10,
-                offset: const Offset(0, 3),
+                offset: const Offset(0, 2),
               ),
             ],
           ),
@@ -87,7 +87,7 @@ class PoliItem extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF1F5F9),
+                              color: const Color(0xFFF2F2F7),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -95,7 +95,7 @@ class PoliItem extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 10.5,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF64748B),
+                                color: Color(0xFF8E8E93),
                               ),
                             ),
                           ),
@@ -131,7 +131,7 @@ class PoliItem extends StatelessWidget {
                               const Icon(
                                 Icons.location_on_outlined,
                                 size: 12,
-                                color: Color(0xFF94A3B8),
+                                color: Color(0xFF8E8E93),
                               ),
                               const SizedBox(width: 2.5),
                               Flexible(
@@ -141,7 +141,7 @@ class PoliItem extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     fontSize: 11.5,
-                                    color: Color(0xFF64748B),
+                                    color: Color(0xFF8E8E93),
                                     letterSpacing: -0.2,
                                   ),
                                 ),
@@ -155,23 +155,13 @@ class PoliItem extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(width: 10),
+              const SizedBox(width: 6),
 
-              // Minimalist Trailing Chevron Button
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF8FAFC),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFF1F5F9), width: 1),
-                ),
-                alignment: Alignment.center,
-                child: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 12,
-                  color: Color(0xFF94A3B8),
-                ),
+              // iOS Table Disclosure Chevron
+              const Icon(
+                Icons.chevron_right_rounded,
+                size: 22,
+                color: Color(0xFFC7C7CC),
               ),
             ],
           ),
