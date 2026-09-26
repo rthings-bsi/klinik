@@ -4,6 +4,7 @@ import '../model/poli.dart';
 import '../service/poli_service.dart';
 import '../widget/staggered_entrance.dart';
 import '../widget/smooth_page_route.dart';
+import '../widget/aesthetic_background.dart';
 import 'poli_form.dart';
 import 'poli_item.dart';
 
@@ -86,8 +87,9 @@ class _PoliPageState extends State<PoliPage>
               },
             )
           : null,
-      body: Column(
-        children: [
+      body: AestheticBackground(
+        child: Column(
+          children: [
           // Sleek Minimalist Search Bar Container
           Container(
             color: Colors.white,
@@ -388,6 +390,7 @@ class _PoliPageState extends State<PoliPage>
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

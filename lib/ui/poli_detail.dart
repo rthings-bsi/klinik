@@ -5,6 +5,7 @@ import '../model/poli.dart';
 import '../service/poli_service.dart';
 import '../widget/animated_pressable.dart';
 import '../widget/smooth_page_route.dart';
+import '../widget/aesthetic_background.dart';
 import 'antrian_form.dart';
 import 'poli_page.dart';
 import 'poli_update_form.dart';
@@ -49,9 +50,10 @@ class _PoliDetailState extends State<PoliDetail> {
       appBar: AppBar(
         title: const Text("Detail Poli"),
       ),
-      body: FutureBuilder<Poli>(
-        future: _poliFuture,
-        builder: (context, snapshot) {
+      body: AestheticBackground(
+        child: FutureBuilder<Poli>(
+          future: _poliFuture,
+          builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(color: Color(0xFF0F766E)),
@@ -273,8 +275,9 @@ class _PoliDetailState extends State<PoliDetail> {
           );
         },
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _tombolUbah(Poli poli) {
     return AnimatedPressable(

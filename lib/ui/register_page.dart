@@ -3,6 +3,7 @@ import '../model/user.dart';
 import '../service/user_service.dart';
 import '../widget/animated_pressable.dart';
 import '../widget/staggered_entrance.dart';
+import '../widget/aesthetic_background.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -93,12 +94,13 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         title: const Text("Pendaftaran Akun"),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+      body: AestheticBackground(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
               // Header Card
               StaggeredEntrance(
                 index: 0,
@@ -338,8 +340,9 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _textField({
     required TextEditingController controller,

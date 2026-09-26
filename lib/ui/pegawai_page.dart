@@ -4,6 +4,7 @@ import '../model/pegawai.dart';
 import '../service/pegawai_service.dart';
 import '../widget/staggered_entrance.dart';
 import '../widget/smooth_page_route.dart';
+import '../widget/aesthetic_background.dart';
 import 'pegawai_form.dart';
 import 'pegawai_item.dart';
 
@@ -123,8 +124,9 @@ class _PegawaiPageState extends State<PegawaiPage>
           _loadData();
         },
       ),
-      body: Column(
-        children: [
+      body: AestheticBackground(
+        child: Column(
+          children: [
           // iOS Search Bar
           Container(
             color: Colors.white,
@@ -323,6 +325,7 @@ class _PegawaiPageState extends State<PegawaiPage>
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

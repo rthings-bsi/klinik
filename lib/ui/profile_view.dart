@@ -4,6 +4,7 @@ import '../helpers/user_info.dart';
 import '../widget/animated_pressable.dart';
 import '../widget/smooth_page_route.dart';
 import '../widget/staggered_entrance.dart';
+import '../widget/aesthetic_background.dart';
 import 'login.dart';
 
 class ProfileView extends StatefulWidget {
@@ -122,10 +123,11 @@ class _ProfileViewState extends State<ProfileView>
           ? const Center(
               child: CircularProgressIndicator(color: Color(0xFF0F766E)),
             )
-          : RefreshIndicator(
-              color: const Color(0xFF0F766E),
-              onRefresh: _loadProfile,
-              child: SingleChildScrollView(
+          : AestheticBackground(
+              child: RefreshIndicator(
+                color: const Color(0xFF0F766E),
+                onRefresh: _loadProfile,
+                child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Column(
@@ -401,6 +403,7 @@ class _ProfileViewState extends State<ProfileView>
                 ),
               ),
             ),
+          ),
     );
   }
 

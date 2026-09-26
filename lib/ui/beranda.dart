@@ -13,6 +13,7 @@ import '../widget/animated_pressable.dart';
 import '../widget/staggered_entrance.dart';
 import '../widget/smooth_page_route.dart';
 import '../widget/elegant_navbar.dart';
+import '../widget/aesthetic_background.dart';
 import 'login.dart';
 import 'poli_page.dart';
 import 'poli_detail.dart';
@@ -552,15 +553,16 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
     super.build(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF2F2F7),
-      body: SafeArea(
-        bottom: false,
-        child: RefreshIndicator(
-          color: const Color(0xFF0F766E),
-          onRefresh: () async {
-            await _loadUser();
-            await _loadStatistics();
-          },
-          child: SingleChildScrollView(
+      body: AestheticBackground(
+        child: SafeArea(
+          bottom: false,
+          child: RefreshIndicator(
+            color: const Color(0xFF0F766E),
+            onRefresh: () async {
+              await _loadUser();
+              await _loadStatistics();
+            },
+            child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 96.0),
             child: Column(
@@ -998,10 +1000,11 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildAdminHeroCard() {
+Widget _buildAdminHeroCard() {
     final hasCalled = _currentlyCalledAntrian != null;
     return Container(
       width: double.infinity,

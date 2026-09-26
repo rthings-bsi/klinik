@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../service/login_service.dart';
 import '../widget/smooth_page_route.dart';
 import '../widget/staggered_entrance.dart';
+import '../widget/aesthetic_background.dart';
 import 'beranda.dart';
 import 'register_page.dart';
 
@@ -30,8 +31,9 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF2F2F7),
-      body: SafeArea(
-        child: Center(
+      body: AestheticBackground(
+        child: SafeArea(
+          child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
             child: Form(
@@ -179,8 +181,9 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _usernameTextField() {
     return TextFormField(
