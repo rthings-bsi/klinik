@@ -91,6 +91,7 @@ class UserInfo {
     final role = await getRole();
     final username = await getUsername();
     return role.toLowerCase() == "admin" ||
+        role.toLowerCase() == "pegawai" ||
         (username != null && username.toLowerCase() == "admin");
   }
 

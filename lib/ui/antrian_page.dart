@@ -3,7 +3,6 @@ import '../helpers/user_info.dart';
 import '../model/antrian.dart';
 import '../service/antrian_service.dart';
 import '../widget/animated_pressable.dart';
-import '../widget/sidebar.dart';
 import '../widget/smooth_page_route.dart';
 import '../widget/staggered_entrance.dart';
 import 'antrian_detail.dart';
@@ -16,7 +15,11 @@ class AntrianPage extends StatefulWidget {
   State<AntrianPage> createState() => _AntrianPageState();
 }
 
-class _AntrianPageState extends State<AntrianPage> {
+class _AntrianPageState extends State<AntrianPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   final TextEditingController _searchCtrl = TextEditingController();
   List<Antrian> _allAntrian = [];
   List<Antrian> _filteredAntrian = [];
@@ -111,6 +114,7 @@ class _AntrianPageState extends State<AntrianPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // Find currently active called queue
     final currentlyCalled = _allAntrian.firstWhere(
       (a) => a.status.toLowerCase() == 'dipanggil',
@@ -130,7 +134,6 @@ class _AntrianPageState extends State<AntrianPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF2F2F7),
-      drawer: const Sidebar(activeMenu: "antrian"),
       appBar: AppBar(
         title: const Text("Antrian Berobat"),
         actions: [

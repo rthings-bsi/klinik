@@ -187,7 +187,7 @@ class _LoginState extends State<Login> {
       controller: _usernameCtrl,
       decoration: const InputDecoration(
         labelText: "Username",
-        hintText: "Masukkan username",
+        hintText: "Username, NIP, atau Email",
         prefixIcon: Icon(Icons.person_rounded, color: Color(0xFF0F766E)),
       ),
       validator: (value) {

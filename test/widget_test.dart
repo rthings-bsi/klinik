@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:klinik_app/main.dart';
 import 'package:klinik_app/model/poli.dart';
@@ -10,9 +11,13 @@ import 'package:klinik_app/service/pegawai_service.dart';
 import 'package:klinik_app/service/pasien_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:klinik_app/helpers/user_info.dart';
-import 'package:klinik_app/service/login_service.dart';
 import 'package:klinik_app/service/user_service.dart';
 import 'package:klinik_app/service/antrian_service.dart';
+import 'package:klinik_app/widget/elegant_navbar.dart';
+import 'package:klinik_app/helpers/poli_helper.dart';
+import 'package:klinik_app/ui/poli_item.dart';
+import 'package:klinik_app/service/login_service.dart';
+import 'package:klinik_app/ui/beranda.dart';
 
 void main() {
   setUp(() {
@@ -230,6 +235,175 @@ void main() {
       expect(await userInfo.getNama(), 'Siti Aminah');
       expect(await userInfo.getNomorTelepon(), '0812345678');
       expect(await userInfo.getNomorRm(), 'RM-2026-001');
+    });
+  });
+
+  group('ElegantNavBar Widget Tests', () {
+    testWidgets('renders all navigation items and responds to taps',
+        (WidgetTester tester) async {
+      int selectedIndex = 0;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            bottomNavigationBar: StatefulBuilder(
+              builder: (context, setState) {
+                return ElegantNavBar(
+                  currentIndex: selectedIndex,
+                  onTap: (index) {
+                    setState(() => selectedIndex = index);
+                  },
+                  items: const [
+                    NavBarItem(
+                      icon: Icons.home_outlined,
+                      activeIcon: Icons.home_rounded,
+                      label: "Beranda",
+                    ),
+                    NavBarItem(
+                      icon: Icons.confirmation_number_outlined,
+                      activeIcon: Icons.confirmation_number_rounded,
+                      label: "Antrian",
+                    ),
+                    NavBarItem(
+                      icon: Icons.meeting_room_outlined,
+                      activeIcon: Icons.meeting_room_rounded,
+                      label: "Poli",
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text("Beranda"), findsOneWidget);
+      expect(find.text("Antrian"), findsOneWidget);
+      expect(find.text("Poli"), findsOneWidget);
+
+      await tester.tap(find.text("Antrian"));
+      await tester.pumpAndSettle();
+
+      expect(selectedIndex, 1);
+    });
+  });
+
+  group('PoliItem & PoliHelper UI Tests', () {
+    test('PoliHelper correctly maps medical specialties and metadata', () {
+      final sarafMeta = PoliHelper.getMeta('Poli Saraf');
+      expect(sarafMeta.category, 'Spesialis Saraf');
+      expect(sarafMeta.icon, Icons.psychology_rounded);
+
+      final gigiMeta = PoliHelper.getMeta('Poli Gigi');
+      expect(gigiMeta.category, 'Kesehatan Gigi & Mulut');
+      expect(gigiMeta.icon, Icons.health_and_safety_rounded);
+
+      final anakMeta = PoliHelper.getMeta('Poli Anak');
+      expect(anakMeta.category, 'Spesialis Anak (Pediatri)');
+      expect(anakMeta.icon, Icons.child_care_rounded);
+
+      final umumMeta = PoliHelper.getMeta('Poli Umum');
+      expect(umumMeta.category, 'Pelayanan Medis Umum');
+      expect(umumMeta.icon, Icons.medical_services_rounded);
+    });
+
+    testWidgets('PoliItem renders specialty category and location without raw hash clutter',
+        (WidgetTester tester) async {
+      final testPoli = Poli(id: '1', namaPoli: 'Poli Saraf');
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: PoliItem(poli: testPoli),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Poli Saraf'), findsOneWidget);
+      expect(find.text('Spesialis Saraf'), findsOneWidget);
+      expect(find.text('#1'), findsOneWidget);
+      expect(find.byIcon(Icons.psychology_rounded), findsOneWidget);
+    });
+  });
+
+  group('LoginService Multi-Role Authentication Tests', () {
+    test('Admin superuser login succeeds', () async {
+      final loginService = LoginService();
+      final success = await loginService.login('admin', 'admin');
+      expect(success, true);
+      expect(await UserInfo().isAdmin(), true);
+      expect(await UserInfo().getRole(), 'Admin');
+    });
+
+    test('Pegawai can login using NIP or Email and password', () async {
+      final pegawaiService = PegawaiService();
+      final testPegawai = Pegawai(
+        nip: '199505052026',
+        nama: 'Dr. Budi Santoso',
+        tanggalLahir: '1995-05-05',
+        nomorTelepon: '08123456789',
+        email: 'budi.dokter@klinik.id',
+        password: 'dokterpass123',
+      );
+      await pegawaiService.simpan(testPegawai);
+
+      final loginService = LoginService();
+      // Test login via NIP
+      final loginNip = await loginService.login('199505052026', 'dokterpass123');
+      expect(loginNip, true);
+      expect(await UserInfo().isAdmin(), true);
+      expect(await UserInfo().getNama(), 'Dr. Budi Santoso');
+
+      // Test login via Email
+      final loginEmail = await loginService.login('budi.dokter@klinik.id', 'dokterpass123');
+      expect(loginEmail, true);
+      expect(await UserInfo().isAdmin(), true);
+    });
+  });
+
+  group('Beranda Minimalist UI & RBAC Tests', () {
+    testWidgets('Beranda renders Admin dashboard elements properly',
+        (WidgetTester tester) async {
+      await UserInfo().setRole('Admin');
+      await UserInfo().setUsername('admin');
+      await UserInfo().setNama('Administrator');
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Beranda(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Klinik Pratama Medika'), findsOneWidget);
+      expect(find.text('Selamat Bertugas, Administrator'), findsOneWidget);
+      expect(find.text('MONITOR ANTRIAN KLINIK'), findsOneWidget);
+      expect(find.text('AKSI CEPAT'), findsOneWidget);
+      expect(find.text('RINGKASAN DATA'), findsOneWidget);
+    });
+
+    testWidgets('Beranda renders Pasien dashboard elements properly',
+        (WidgetTester tester) async {
+      await UserInfo().setRole('Pasien');
+      await UserInfo().setUsername('siti');
+      await UserInfo().setNama('Siti Aminah');
+      await UserInfo().setNomorRm('RM-2026-001');
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Beranda(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Klinik Pratama Medika'), findsOneWidget);
+      expect(find.text('Halo Sehat, Siti Aminah'), findsOneWidget);
+      expect(find.text('AKSI CEPAT'), findsOneWidget);
+      expect(find.text('RINGKASAN DATA'), findsOneWidget);
+      expect(find.text('Ambil Nomor Antrian'), findsOneWidget);
     });
   });
 }

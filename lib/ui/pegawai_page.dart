@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../helpers/user_info.dart';
 import '../model/pegawai.dart';
 import '../service/pegawai_service.dart';
-import '../widget/sidebar.dart';
 import '../widget/staggered_entrance.dart';
 import '../widget/smooth_page_route.dart';
 import 'pegawai_form.dart';
@@ -15,7 +14,11 @@ class PegawaiPage extends StatefulWidget {
   State<PegawaiPage> createState() => _PegawaiPageState();
 }
 
-class _PegawaiPageState extends State<PegawaiPage> {
+class _PegawaiPageState extends State<PegawaiPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   late Future<List<Pegawai>> _pegawaiFuture;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = "";
@@ -47,11 +50,11 @@ class _PegawaiPageState extends State<PegawaiPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (!_isAdmin) {
       return Scaffold(
         backgroundColor: const Color(0xFFF2F2F7),
         appBar: AppBar(title: const Text("Data Pegawai")),
-        drawer: const Sidebar(activeMenu: "pegawai"),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(32.0),
@@ -95,7 +98,6 @@ class _PegawaiPageState extends State<PegawaiPage> {
     }
     return Scaffold(
       backgroundColor: const Color(0xFFF2F2F7),
-      drawer: const Sidebar(activeMenu: "pegawai"),
       appBar: AppBar(
         title: const Text("Data Pegawai"),
         actions: [

@@ -1,4 +1,5 @@
 import '../helpers/user_info.dart';
+import 'pegawai_service.dart';
 import 'user_service.dart';
 
 class LoginService {
@@ -16,7 +17,27 @@ class LoginService {
       return true;
     }
 
-    // 2. Check registered users in database / local cache
+    // 2. Check registered pegawai (login via NIP or Email)
+    try {
+      final pegawaiList = await PegawaiService().listData();
+      for (final p in pegawaiList) {
+        final matchesIdentifier = p.nip.trim().toLowerCase() == cleanUsername.toLowerCase() ||
+            p.email.trim().toLowerCase() == cleanUsername.toLowerCase();
+        if (matchesIdentifier && p.password.trim() == cleanPassword) {
+          await UserInfo().setToken("pegawai_token_${p.id ?? p.nip}");
+          await UserInfo().setUserID(p.id ?? p.nip);
+          await UserInfo().setUsername(p.nip);
+          await UserInfo().setRole("Pegawai");
+          await UserInfo().setNama(p.nama);
+          await UserInfo().setNomorTelepon(p.nomorTelepon);
+          return true;
+        }
+      }
+    } catch (_) {
+      // Fallback if network fails
+    }
+
+    // 3. Check registered users in database / local cache
     try {
       final user = await UserService().authenticate(cleanUsername, cleanPassword);
       if (user != null) {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../helpers/user_info.dart';
 import '../model/pasien.dart';
 import '../service/pasien_service.dart';
-import '../widget/sidebar.dart';
 import '../widget/staggered_entrance.dart';
 import '../widget/smooth_page_route.dart';
 import 'pasien_form.dart';
@@ -15,7 +14,11 @@ class PasienPage extends StatefulWidget {
   State<PasienPage> createState() => _PasienPageState();
 }
 
-class _PasienPageState extends State<PasienPage> {
+class _PasienPageState extends State<PasienPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   late Future<List<Pasien>> _pasienFuture;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = "";
@@ -47,11 +50,11 @@ class _PasienPageState extends State<PasienPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (!_isAdmin) {
       return Scaffold(
         backgroundColor: const Color(0xFFF2F2F7),
         appBar: AppBar(title: const Text("Data Pasien")),
-        drawer: const Sidebar(activeMenu: "pasien"),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(32.0),
@@ -95,7 +98,6 @@ class _PasienPageState extends State<PasienPage> {
     }
     return Scaffold(
       backgroundColor: const Color(0xFFF2F2F7),
-      drawer: const Sidebar(activeMenu: "pasien"),
       appBar: AppBar(
         title: const Text("Data Pasien"),
         actions: [

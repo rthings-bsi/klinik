@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/poli_helper.dart';
 import '../helpers/user_info.dart';
 import '../model/poli.dart';
 import '../service/poli_service.dart';
@@ -91,6 +92,7 @@ class _PoliDetailState extends State<PoliDetail> {
           }
 
           final poli = snapshot.data!;
+          final meta = PoliHelper.getMeta(poli.namaPoli);
           return Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -100,42 +102,71 @@ class _PoliDetailState extends State<PoliDetail> {
                   padding: const EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
+                        color: const Color(0xFF0F172A).withValues(alpha: 0.03),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "INFORMASI POLIKLINIK",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF8E8E93),
-                          letterSpacing: 0.4,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "INFORMASI POLIKLINIK",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF64748B),
+                              letterSpacing: 0.6,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF10B981).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.check_circle_rounded, size: 12, color: Color(0xFF10B981)),
+                                SizedBox(width: 4),
+                                Text(
+                                  "Pelayanan Aktif",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF10B981),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 14),
-                      Divider(height: 1, color: const Color(0xFFE5E5EA)),
+                      const Divider(height: 1, color: Color(0xFFE2E8F0)),
                       const SizedBox(height: 16),
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(12),
+                            width: 54,
+                            height: 54,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0F766E).withValues(alpha: 0.12),
-                              borderRadius: BorderRadius.circular(13),
+                              color: meta.backgroundColor,
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            child: const Icon(
-                              Icons.meeting_room_rounded,
-                              color: Color(0xFF0F766E),
+                            alignment: Alignment.center,
+                            child: Icon(
+                              meta.icon,
+                              color: meta.primaryColor,
                               size: 28,
                             ),
                           ),
@@ -144,30 +175,61 @@ class _PoliDetailState extends State<PoliDetail> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "Nama Poliklinik",
-                                  style: TextStyle(fontSize: 12.5, color: Color(0xFF8E8E93), letterSpacing: -0.2),
-                                ),
-                                const SizedBox(height: 2),
                                 Text(
                                   poli.namaPoli,
                                   style: const TextStyle(
                                     fontSize: 19,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF1C1C1E),
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF0F172A),
                                     letterSpacing: -0.4,
                                   ),
                                 ),
-                                if (poli.id != null) ...[
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    "ID Poli: ${poli.id}",
-                                    style: const TextStyle(fontSize: 12, color: Color(0xFF8E8E93)),
+                                const SizedBox(height: 4),
+                                Text(
+                                  meta.category,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: meta.primaryColor,
                                   ),
-                                ]
+                                ),
                               ],
                             ),
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      const Divider(height: 1, color: Color(0xFFE2E8F0)),
+                      const SizedBox(height: 14),
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on_outlined, size: 16, color: Color(0xFF64748B)),
+                          const SizedBox(width: 6),
+                          Text(
+                            meta.location,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF475569),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Spacer(),
+                          if (poli.id != null)
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF1F5F9),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                "Kode: #${poli.id}",
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF64748B),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ],

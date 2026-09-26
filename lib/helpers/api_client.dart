@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 final Dio dio = Dio(
   BaseOptions(
     baseUrl: 'https://script.google.com/macros/s/AKfycby4dY6Nr272MCSrqmHv-ehU5NOn24syJ61PZoWkFe3hRYrZodU2SydVDsPGIuea6Gf8/exec',
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
+    connectTimeout: const Duration(seconds: 4),
+    receiveTimeout: const Duration(seconds: 5),
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -13,6 +14,11 @@ final Dio dio = Dio(
 );
 
 class ApiClient {
+  // In-memory cache for ultra-fast repeated loads
+  static final Map<String, dynamic> _apiCache = {};
+  static final Map<String, DateTime> _cacheTime = {};
+  static const Duration _cacheDuration = Duration(minutes: 5);
+
   // In-memory fallback mock storage to ensure 100% reliability offline
   static final Map<String, List<Map<String, dynamic>>> _mockStorage = {
     'poli': [
@@ -113,10 +119,33 @@ class ApiClient {
     ],
   };
 
-  Future<Response> get(String path) async {
+  void _invalidateCache(String resource) {
+    _apiCache.removeWhere((key, _) => key == resource || key.startsWith('$resource/'));
+    _cacheTime.removeWhere((key, _) => key == resource || key.startsWith('$resource/'));
+  }
+
+  Future<Response> get(String path, {bool forceRefresh = false}) async {
     final cleanPath = path.replaceAll(RegExp(r'^/|/$'), '');
     final segments = cleanPath.split('/');
     final resource = segments[0];
+
+    // Return instant memory cache if valid (0ms latency)
+    if (!forceRefresh && _apiCache.containsKey(cleanPath)) {
+      final cachedTime = _cacheTime[cleanPath];
+      if (cachedTime != null &&
+          DateTime.now().difference(cachedTime) < _cacheDuration) {
+        return Response(
+          requestOptions: RequestOptions(path: path),
+          data: _apiCache[cleanPath],
+          statusCode: 200,
+        );
+      }
+    }
+
+    // On web preview (FlutLab/Chrome), GAS CORS is blocked -> instant local fallback
+    if (kIsWeb) {
+      return _handleMockGet(path);
+    }
 
     try {
       if (segments.length > 1) {
@@ -126,9 +155,12 @@ class ApiClient {
           queryParameters: {'sheet': resource, 'id': id},
         );
         if (response.data is List && (response.data as List).isNotEmpty) {
+          final item = response.data[0];
+          _apiCache[cleanPath] = item;
+          _cacheTime[cleanPath] = DateTime.now();
           return Response(
             requestOptions: response.requestOptions,
-            data: response.data[0],
+            data: item,
             statusCode: 200,
           );
         }
@@ -142,6 +174,10 @@ class ApiClient {
           '',
           queryParameters: {'sheet': resource},
         );
+        if (response.statusCode == 200) {
+          _apiCache[cleanPath] = response.data;
+          _cacheTime[cleanPath] = DateTime.now();
+        }
         return response;
       }
     } catch (_) {
@@ -153,6 +189,7 @@ class ApiClient {
     final cleanPath = path.replaceAll(RegExp(r'^/|/$'), '');
     final segments = cleanPath.split('/');
     final resource = segments[0];
+    _invalidateCache(resource);
 
     try {
       final Map<String, dynamic> record = Map<String, dynamic>.from(data as Map);
@@ -192,6 +229,7 @@ class ApiClient {
     final segments = cleanPath.split('/');
     final resource = segments[0];
     final id = segments.length > 1 ? segments[1] : '';
+    _invalidateCache(resource);
 
     try {
       final Map<String, dynamic> record = Map<String, dynamic>.from(data as Map);
@@ -233,6 +271,7 @@ class ApiClient {
     final segments = cleanPath.split('/');
     final resource = segments[0];
     final id = segments.length > 1 ? segments[1] : '';
+    _invalidateCache(resource);
 
     try {
       final response = await dio.post(
