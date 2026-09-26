@@ -198,23 +198,12 @@ class _PoliDetailState extends State<PoliDetail> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      const Divider(height: 1, color: Color(0xFFE5E5EA)),
-                      const SizedBox(height: 14),
-                      Row(
-                        children: [
-                          const Icon(Icons.location_on_outlined, size: 16, color: Color(0xFF8E8E93)),
-                          const SizedBox(width: 6),
-                          Text(
-                            meta.location,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: Color(0xFF3C3C43),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const Spacer(),
-                          if (poli.id != null)
+                      if (poli.id != null) ...[
+                        const SizedBox(height: 16),
+                        const Divider(height: 1, color: Color(0xFFE5E5EA)),
+                        const SizedBox(height: 14),
+                        Row(
+                          children: [
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
@@ -222,7 +211,7 @@ class _PoliDetailState extends State<PoliDetail> {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                "Kode: #${poli.id}",
+                                "Kode Poli: #${poli.id}",
                                 style: const TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
@@ -230,8 +219,9 @@ class _PoliDetailState extends State<PoliDetail> {
                                 ),
                               ),
                             ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
                     ],
                   ),
                 ),

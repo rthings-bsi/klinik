@@ -1870,24 +1870,13 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                           ),
                         ),
                         const SizedBox(height: 2),
-                        Row(
-                          children: [
-                            Text(
-                              meta.category,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: meta.primaryColor,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            const Text("•", style: TextStyle(color: Color(0xFFCBD5E1), fontSize: 10)),
-                            const SizedBox(width: 6),
-                            Text(
-                              meta.location,
-                              style: const TextStyle(fontSize: 11, color: Color(0xFF64748B)),
-                            ),
-                          ],
+                        Text(
+                          meta.category,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: meta.primaryColor,
+                          ),
                         ),
                       ],
                     ),

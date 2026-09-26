@@ -122,33 +122,6 @@ class PoliItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-
-                        // Location indicator
-                        Expanded(
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.location_on_outlined,
-                                size: 12,
-                                color: Color(0xFF8E8E93),
-                              ),
-                              const SizedBox(width: 2.5),
-                              Flexible(
-                                child: Text(
-                                  meta.location,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 11.5,
-                                    color: Color(0xFF8E8E93),
-                                    letterSpacing: -0.2,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ],
