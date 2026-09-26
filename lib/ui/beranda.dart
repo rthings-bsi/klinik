@@ -189,6 +189,8 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
   int _pasienCount = 0;
   int _antrianCount = 0;
   int _myAntrianCount = 0;
+  int _waitingCount = 0;
+  int _completedCount = 0;
   bool _isLoading = true;
 
   List<Poli> _featuredPoli = [];
@@ -243,11 +245,17 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
         final antrianList = results[3] as List<Antrian>;
 
         Antrian? called;
+        int waiting = 0;
+        int completed = 0;
+
         for (final a in antrianList) {
           final st = a.status.toLowerCase();
           if (st.contains('panggil') || st.contains('proses') || st.contains('periksa')) {
-            called = a;
-            break;
+            called ??= a;
+          } else if (st.contains('selesai')) {
+            completed++;
+          } else {
+            waiting++;
           }
         }
         called ??= antrianList.isNotEmpty ? antrianList.first : null;
@@ -258,6 +266,8 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
             _pegawaiCount = pegawaiList.length;
             _pasienCount = pasienList.length;
             _antrianCount = antrianList.length;
+            _waitingCount = waiting;
+            _completedCount = completed;
             _featuredPoli = poliList.take(3).toList();
             _currentlyCalledAntrian = called;
             _isLoading = false;
@@ -331,6 +341,30 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
     return '$dayName, ${now.day} $monthName ${now.year}';
   }
 
+  IconData _getTimeIcon() {
+    final hour = DateTime.now().hour;
+    if (hour >= 5 && hour < 11) {
+      return Icons.wb_sunny_rounded;
+    } else if (hour >= 11 && hour < 15) {
+      return Icons.wb_sunny_outlined;
+    } else if (hour >= 15 && hour < 18) {
+      return Icons.wb_twilight_rounded;
+    } else {
+      return Icons.nights_stay_rounded;
+    }
+  }
+
+  Color _getTimeIconColor() {
+    final hour = DateTime.now().hour;
+    if (hour >= 5 && hour < 15) {
+      return const Color(0xFFD97706); // Amber
+    } else if (hour >= 15 && hour < 18) {
+      return const Color(0xFFEA580C); // Orange
+    } else {
+      return const Color(0xFF6366F1); // Indigo
+    }
+  }
+
   void _showProfileModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -370,7 +404,10 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                   decoration: BoxDecoration(
                     color: const Color(0xFF0F766E).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFF0F766E).withValues(alpha: 0.2), width: 1),
+                    border: Border.all(
+                      color: const Color(0xFF0F766E).withValues(alpha: 0.2),
+                      width: 1,
+                    ),
                   ),
                   alignment: Alignment.center,
                   child: Text(
@@ -535,22 +572,22 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                   child: Row(
                     children: [
                       Container(
-                        width: 38,
-                        height: 38,
+                        width: 40,
+                        height: 40,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(11),
+                          borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                           boxShadow: [
                             BoxShadow(
                               color: const Color(0xFF0F172A).withValues(alpha: 0.04),
-                              blurRadius: 8,
+                              blurRadius: 10,
                               offset: const Offset(0, 2),
                             ),
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(11),
+                          borderRadius: BorderRadius.circular(12),
                           child: Image.asset(
                             'assets/images/logo.png',
                             fit: BoxFit.cover,
@@ -571,20 +608,27 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                                 letterSpacing: -0.3,
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            const SizedBox(height: 2.5),
                             Row(
                               children: [
                                 Container(
-                                  width: 6.5,
-                                  height: 6.5,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFF10B981),
+                                  width: 7,
+                                  height: 7,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF10B981),
                                     shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFF10B981).withValues(alpha: 0.4),
+                                        blurRadius: 4,
+                                        spreadRadius: 1,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(width: 5),
+                                const SizedBox(width: 6),
                                 const Text(
-                                  "Pelayanan Buka • 08:00 - 21:00",
+                                  "Pelayanan Aktif • 08:00 - 21:00",
                                   style: TextStyle(
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w500,
@@ -596,11 +640,22 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                           ],
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.refresh_rounded, size: 20, color: Color(0xFF64748B)),
-                        tooltip: "Segarkan Data",
-                        onPressed: _loadStatistics,
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+                        ),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: const Icon(Icons.refresh_rounded, size: 19, color: Color(0xFF64748B)),
+                          tooltip: "Segarkan Data",
+                          onPressed: _loadStatistics,
+                        ),
                       ),
+                      const SizedBox(width: 8),
                       AnimatedPressable(
                         borderRadius: BorderRadius.circular(20),
                         onTap: () => _showProfileModal(context),
@@ -608,20 +663,31 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                           width: 38,
                           height: 38,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF0F766E).withValues(alpha: 0.1),
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF0F766E), Color(0xFF115E59)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: const Color(0xFF0F766E).withValues(alpha: 0.3),
-                              width: 1.2,
+                              color: Colors.white,
+                              width: 1.5,
                             ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF0F766E).withValues(alpha: 0.2),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
                           alignment: Alignment.center,
                           child: Text(
                             _displayName.isNotEmpty ? _displayName[0].toUpperCase() : "U",
                             style: const TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF0F766E),
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -635,53 +701,67 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                 // Greeting & Date Section
                 StaggeredEntrance(
                   index: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _getCurrentDateFormatted(),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF64748B),
-                          letterSpacing: 0.2,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(_getTimeIcon(), size: 13.5, color: _getTimeIconColor()),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    _getCurrentDateFormatted(),
+                                    style: const TextStyle(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF64748B),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 3),
+                              Text(
+                                _isAdmin ? "Selamat Bertugas, $_displayName" : "Halo Sehat, $_displayName",
+                                style: const TextStyle(
+                                  fontSize: 16.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF0F172A),
+                                  letterSpacing: -0.3,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              _isAdmin ? "Selamat Bertugas, $_displayName" : "Halo Sehat, $_displayName",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFF0F172A),
-                                letterSpacing: -0.4,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF0F766E).withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: const Color(0xFF0F766E).withValues(alpha: 0.2), width: 0.6),
+                          ),
+                          child: Text(
+                            _role,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF0F766E),
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0F766E).withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              _role,
-                              style: const TextStyle(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFF0F766E),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -693,7 +773,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                   child: _isAdmin ? _buildAdminHeroCard() : _buildPasienHeroCard(),
                 ),
 
-                const SizedBox(height: 22),
+                const SizedBox(height: 20),
 
                 // Quick Shortcuts Row
                 StaggeredEntrance(
@@ -710,17 +790,76 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                           letterSpacing: 0.8,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       _isAdmin ? _buildAdminQuickActions() : _buildPasienQuickActions(),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 22),
+                const SizedBox(height: 20),
+
+                // Health Bulletin / Clinic Notice
+                StaggeredEntrance(
+                  index: 4,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFF0FDFA), Color(0xFFF8FAFC)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: const Color(0xFFCCFBF1), width: 0.9),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF0F766E).withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.verified_user_rounded,
+                            size: 18,
+                            color: Color(0xFF0F766E),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Layanan Resep & Farmasi Siaga",
+                                style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF0F172A),
+                                ),
+                              ),
+                              SizedBox(height: 1.5),
+                              Text(
+                                "Pengambilan obat resep & cek tensi gratis setiap hari kerja.",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Color(0xFF64748B),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
 
                 // Key Statistics (2x2 Grid)
                 StaggeredEntrance(
-                  index: 4,
+                  index: 5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -737,7 +876,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                             ),
                           ),
                           Text(
-                            _isLoading ? "Memperbarui..." : "Real-time",
+                            _isLoading ? "Sinkronisasi..." : "Real-time",
                             style: const TextStyle(
                               fontSize: 11,
                               color: Color(0xFF94A3B8),
@@ -755,7 +894,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
 
                 // Featured Poliklinik Preview
                 StaggeredEntrance(
-                  index: 5,
+                  index: 6,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -800,43 +939,55 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
 
                 // Minimalist Clinic Info Footer Card
                 StaggeredEntrance(
-                  index: 6,
+                  index: 7,
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
                     ),
-                    child: Column(
+                    child: Row(
                       children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF0F766E).withValues(alpha: 0.08),
-                                borderRadius: BorderRadius.circular(10),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF0F766E).withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(Icons.support_agent_rounded, size: 20, color: Color(0xFF0F766E)),
+                        ),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Hotline UGD & Ambulans",
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Color(0xFF0F172A)),
                               ),
-                              child: const Icon(Icons.local_hospital_rounded, size: 18, color: Color(0xFF0F766E)),
-                            ),
-                            const SizedBox(width: 12),
-                            const Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Hotline UGD & Informasi",
-                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Color(0xFF0F172A)),
-                                  ),
-                                  Text(
-                                    "(0561) 734-567 • Jl. Ahmad Yani No. 12",
-                                    style: TextStyle(fontSize: 11.5, color: Color(0xFF64748B)),
-                                  ),
-                                ],
+                              SizedBox(height: 1),
+                              Text(
+                                "(0561) 734-567 • Jl. Ahmad Yani No. 12",
+                                style: TextStyle(fontSize: 11.5, color: Color(0xFF64748B)),
                               ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF1F5F9),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text(
+                            "24 Jam",
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF0F766E),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
@@ -856,12 +1007,16 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF0F172A), // Slate 900
+        gradient: const LinearGradient(
+          colors: [Color(0xFF0F172A), Color(0xFF1E293B)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0F172A).withValues(alpha: 0.12),
-            blurRadius: 16,
+            color: const Color(0xFF0F172A).withValues(alpha: 0.16),
+            blurRadius: 18,
             offset: const Offset(0, 6),
           ),
         ],
@@ -872,11 +1027,18 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.sensors_rounded, size: 14, color: Color(0xFF10B981)),
-                  SizedBox(width: 6),
-                  Text(
+                  Container(
+                    width: 7,
+                    height: 7,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF10B981),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 7),
+                  const Text(
                     "MONITOR ANTRIAN KLINIK",
                     style: TextStyle(
                       fontSize: 11,
@@ -888,13 +1050,14 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.12), width: 0.6),
                 ),
                 child: Text(
-                  "$_antrianCount Pasien",
+                  "$_antrianCount Pasien Hari Ini",
                   style: const TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
@@ -911,17 +1074,29 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0F766E),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF0F766E), Color(0xFF14B8A6)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF0F766E).withValues(alpha: 0.35),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Text(
                     _currentlyCalledAntrian!.nomorAntrian,
                     style: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 24,
                       fontWeight: FontWeight.w800,
                       color: Colors.white,
+                      letterSpacing: -0.5,
                     ),
                   ),
                 ),
@@ -933,7 +1108,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                       Text(
                         _currentlyCalledAntrian!.namaPoli,
                         style: const TextStyle(
-                          fontSize: 14.5,
+                          fontSize: 15,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
@@ -952,10 +1127,11 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
                   decoration: BoxDecoration(
                     color: const Color(0xFF10B981).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.3), width: 0.6),
                   ),
                   child: Text(
                     _currentlyCalledAntrian!.status,
@@ -967,6 +1143,25 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 14),
+            // Micro summary bar
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _adminMicroStat("Menunggu", _waitingCount.toString(), const Color(0xFFFBBF24)),
+                  Container(width: 1, height: 16, color: const Color(0xFF334155)),
+                  _adminMicroStat("Dipanggil", hasCalled ? "1" : "0", const Color(0xFF34D399)),
+                  Container(width: 1, height: 16, color: const Color(0xFF334155)),
+                  _adminMicroStat("Selesai", _completedCount.toString(), const Color(0xFF94A3B8)),
+                ],
+              ),
             ),
           ] else ...[
             const Row(
@@ -1016,6 +1211,21 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
     );
   }
 
+  Widget _adminMicroStat(String label, String value, Color valueColor) {
+    return Row(
+      children: [
+        Text(
+          "$label: ",
+          style: const TextStyle(fontSize: 11, color: Color(0xFF94A3B8)),
+        ),
+        Text(
+          value,
+          style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold, color: valueColor),
+        ),
+      ],
+    );
+  }
+
   Widget _buildPasienHeroCard() {
     final hasTicket = _myActiveTicket != null;
     return Container(
@@ -1027,8 +1237,8 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
         border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0F172A).withValues(alpha: 0.03),
-            blurRadius: 14,
+            color: const Color(0xFF0F172A).withValues(alpha: 0.04),
+            blurRadius: 16,
             offset: const Offset(0, 4),
           ),
         ],
@@ -1049,9 +1259,9 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                       shape: BoxShape.circle,
                     ),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 7),
                   Text(
-                    hasTicket ? "TIKET DIGITAL ANDA" : "LAYANAN RAWAT JALAN",
+                    hasTicket ? "KARTU ANTRIAN DIGITAL" : "LAYANAN RAWAT JALAN",
                     style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
@@ -1063,16 +1273,17 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
               ),
               if (hasTicket)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F5F9),
+                    color: const Color(0xFF0F766E).withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFF0F766E).withValues(alpha: 0.2), width: 0.6),
                   ),
                   child: Text(
                     _myActiveTicket!.status,
                     style: const TextStyle(
                       fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Color(0xFF0F766E),
                     ),
                   ),
@@ -1086,17 +1297,22 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0F766E),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF0F766E), Color(0xFF115E59)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     _myActiveTicket!.nomorAntrian,
                     style: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 24,
                       fontWeight: FontWeight.w800,
                       color: Colors.white,
+                      letterSpacing: -0.5,
                     ),
                   ),
                 ),
@@ -1137,6 +1353,7 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
                 decoration: BoxDecoration(
                   color: const Color(0xFFF1F5F9),
                   borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFE2E8F0), width: 0.8),
                 ),
                 alignment: Alignment.center,
                 child: const Row(
@@ -1202,8 +1419,19 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
               child: Container(
                 height: 42,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0F766E),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF0F766E), Color(0xFF115E59)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF0F766E).withValues(alpha: 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 alignment: Alignment.center,
                 child: const Row(
@@ -1336,13 +1564,13 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
             child: Column(
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: 42,
+                  height: 42,
                   decoration: BoxDecoration(
                     color: bgColor,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, color: color, size: 20),
+                  child: Icon(icon, color: color, size: 21),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -1518,13 +1746,13 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 34,
-                  height: 34,
+                  width: 36,
+                  height: 36,
                   decoration: BoxDecoration(
                     color: bgColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(icon, color: color, size: 18),
+                  child: Icon(icon, color: color, size: 19),
                 ),
                 Text(
                   title,
@@ -1619,14 +1847,14 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
               child: Row(
                 children: [
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 42,
+                    height: 42,
                     decoration: BoxDecoration(
                       color: meta.backgroundColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     alignment: Alignment.center,
-                    child: Icon(meta.icon, color: meta.primaryColor, size: 20),
+                    child: Icon(meta.icon, color: meta.primaryColor, size: 21),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
