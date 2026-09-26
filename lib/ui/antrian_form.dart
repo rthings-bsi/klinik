@@ -317,7 +317,7 @@ class _AntrianFormState extends State<AntrianForm> {
                                 ),
                               )
                             : DropdownButtonFormField<Poli>(
-                                initialValue: _selectedPoli,
+                                value: _selectedPoli,
                                 decoration: const InputDecoration(
                                   labelText: "Poliklinik Spesialis",
                                   prefixIcon: Icon(Icons.meeting_room_rounded,
