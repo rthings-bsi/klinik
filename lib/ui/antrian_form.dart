@@ -405,7 +405,7 @@ class _AntrianFormState extends State<AntrianForm> {
                                   ),
                                 )
                               : DropdownButtonFormField<Poli>(
-                                  initialValue: _selectedPoli,
+                                  value: _selectedPoli,
                                   dropdownColor: LuxuryTheme.pureWhite,
                                   borderRadius: BorderRadius.circular(16),
                                   decoration: _inputDecoration(
