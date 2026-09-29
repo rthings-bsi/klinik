@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import '../model/user.dart';
 import '../service/user_service.dart';
 import '../widget/animated_pressable.dart';
@@ -41,9 +42,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (_passwordCtrl.text.trim() != _confirmPasswordCtrl.text.trim()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xFFFF3B30),
-          content: Text("Konfirmasi password tidak cocok."),
+        SnackBar(
+          backgroundColor: LuxuryTheme.crimson,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          content: const Text("Konfirmasi password tidak cocok."),
         ),
       );
       return;
@@ -67,9 +70,11 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() => _isLoading = false);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xFF34C759),
-          content: Text("Akun berhasil didaftarkan. Silakan masuk."),
+        SnackBar(
+          backgroundColor: LuxuryTheme.charcoal,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          content: const Text("Akun berhasil didaftarkan. Silakan masuk."),
         ),
       );
 
@@ -80,7 +85,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFFFF3B30),
+          backgroundColor: LuxuryTheme.crimson,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           content: Text(e.toString().replaceAll("Exception: ", "")),
         ),
       );
@@ -90,244 +97,232 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),
+      backgroundColor: LuxuryTheme.alabaster,
       appBar: AppBar(
         title: const Text("Pendaftaran Akun"),
       ),
       body: AestheticBackground(
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-              // Header Card
-              StaggeredEntrance(
-                index: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
-                        blurRadius: 12,
-                        offset: const Offset(0, 3),
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 480),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                // Header Card
+                StaggeredEntrance(
+                  index: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: LuxuryTheme.pureWhite,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: LuxuryTheme.charcoal.withValues(alpha: 0.08),
+                        width: 1.0,
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 52,
-                        height: 52,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0F766E).withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: LuxuryTheme.charcoal.withValues(alpha: 0.04),
+                          blurRadius: 18,
+                          offset: const Offset(0, 5),
                         ),
-                        child: const Icon(
-                          Icons.person_add_rounded,
-                          color: Color(0xFF0F766E),
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "Registrasi Pasien Baru",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF1C1C1E),
-                                letterSpacing: -0.3,
-                              ),
-                            ),
-                            SizedBox(height: 3),
-                            Text(
-                              "Daftarkan akun untuk antrian & layanan klinik",
-                              style: TextStyle(
-                                fontSize: 12.5,
-                                color: Color(0xFF8E8E93),
-                                letterSpacing: -0.2,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 18),
-
-              // Form Card
-              StaggeredEntrance(
-                index: 1,
-                child: Container(
-                  padding: const EdgeInsets.all(22),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
-                        blurRadius: 14,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      ],
+                    ),
+                    child: Row(
                       children: [
-                        _textField(
-                          controller: _usernameCtrl,
-                          label: "Username",
-                          hint: "Contoh: budi_santoso",
-                          icon: Icons.alternate_email_rounded,
-                          validator: (val) {
-                            if (val == null || val.trim().isEmpty) {
-                              return "Username wajib diisi";
-                            }
-                            if (val.trim().length < 3) {
-                              return "Username minimal 3 karakter";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 14),
-                        _textField(
-                          controller: _namaCtrl,
-                          label: "Nama Lengkap",
-                          hint: "Nama sesuai identitas KTP",
-                          icon: Icons.badge_rounded,
-                          validator: (val) =>
-                              val == null || val.trim().isEmpty ? "Nama lengkap wajib diisi" : null,
-                        ),
-                        const SizedBox(height: 14),
-                        _textField(
-                          controller: _nomorTeleponCtrl,
-                          label: "Nomor WhatsApp / HP",
-                          hint: "Contoh: 081234567890",
-                          icon: Icons.phone_rounded,
-                          keyboardType: TextInputType.phone,
-                          validator: (val) {
-                            if (val == null || val.trim().isEmpty) {
-                              return "Nomor HP wajib diisi";
-                            }
-                            if (val.trim().length < 8) {
-                              return "Nomor HP minimal 8 digit";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 14),
-                        _textField(
-                          controller: _nomorRmCtrl,
-                          label: "Nomor RM (Opsional)",
-                          hint: "Kosongkan jika pasien baru",
-                          icon: Icons.medical_information_rounded,
-                        ),
-                        const SizedBox(height: 14),
-                        _passwordField(
-                          controller: _passwordCtrl,
-                          label: "Kata Sandi",
-                          isObscure: _obscurePassword,
-                          onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
-                          validator: (val) {
-                            if (val == null || val.trim().isEmpty) {
-                              return "Kata sandi wajib diisi";
-                            }
-                            if (val.length < 5) {
-                              return "Kata sandi minimal 5 karakter";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 14),
-                        _passwordField(
-                          controller: _confirmPasswordCtrl,
-                          label: "Ulangi Kata Sandi",
-                          isObscure: _obscureConfirm,
-                          onToggle: () => setState(() => _obscureConfirm = !_obscureConfirm),
-                          validator: (val) =>
-                              val == null || val.trim().isEmpty ? "Ulangi kata sandi" : null,
-                        ),
-                        const SizedBox(height: 24),
-                        AnimatedPressable(
-                          borderRadius: BorderRadius.circular(14),
-                          onTap: _isLoading ? null : _handleRegister,
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0F766E),
-                              borderRadius: BorderRadius.circular(14),
+                        Container(
+                          width: 52,
+                          height: 52,
+                          decoration: BoxDecoration(
+                            color: LuxuryTheme.paleTaupe.withValues(alpha: 0.7),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: LuxuryTheme.charcoal.withValues(alpha: 0.1),
+                              width: 1.0,
                             ),
-                            alignment: Alignment.center,
-                            child: _isLoading
-                                ? const SizedBox(
-                                    width: 22,
-                                    height: 22,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                      strokeWidth: 2.2,
-                                    ),
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(Icons.check_circle_outline_rounded,
-                                          color: Colors.white, size: 20),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Daftar Akun Sekarang",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: -0.2,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                          ),
+                          child: const Icon(
+                            Icons.person_add_rounded,
+                            color: LuxuryTheme.charcoal,
+                            size: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                "Registrasi Pasien Baru",
+                                style: TextStyle(
+                                  fontFamily: 'serif',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: LuxuryTheme.charcoal,
+                                  letterSpacing: -0.2,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                "Daftarkan akun untuk antrian & layanan klinik",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: LuxuryTheme.warmGrey,
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // Bottom Link to Login
-              StaggeredEntrance(
-                index: 2,
-                child: Center(
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: RichText(
-                      text: const TextSpan(
-                        text: "Sudah memiliki akun? ",
-                        style: TextStyle(
-                          color: Color(0xFF8E8E93),
-                          fontSize: 14,
-                          letterSpacing: -0.2,
+                // Form Card
+                StaggeredEntrance(
+                  index: 1,
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: LuxuryTheme.pureWhite,
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(
+                        color: LuxuryTheme.charcoal.withValues(alpha: 0.08),
+                        width: 1.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: LuxuryTheme.charcoal.withValues(alpha: 0.04),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
                         ),
+                        BoxShadow(
+                          color: LuxuryTheme.charcoal.withValues(alpha: 0.02),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          TextSpan(
-                            text: "Masuk di sini",
-                            style: TextStyle(
-                              color: Color(0xFF0F766E),
-                              fontWeight: FontWeight.bold,
+                          _textField(
+                            controller: _usernameCtrl,
+                            label: "Username",
+                            hint: "Contoh: budi_santoso",
+                            icon: Icons.alternate_email_rounded,
+                            validator: (val) {
+                              if (val == null || val.trim().isEmpty) {
+                                return "Username wajib diisi";
+                              }
+                              if (val.trim().length < 3) {
+                                return "Username minimal 3 karakter";
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          _textField(
+                            controller: _namaCtrl,
+                            label: "Nama Lengkap",
+                            hint: "Nama sesuai identitas KTP",
+                            icon: Icons.badge_outlined,
+                            validator: (val) =>
+                                val == null || val.trim().isEmpty ? "Nama lengkap wajib diisi" : null,
+                          ),
+                          const SizedBox(height: 16),
+                          _textField(
+                            controller: _nomorTeleponCtrl,
+                            label: "Nomor WhatsApp / HP",
+                            hint: "Contoh: 081234567890",
+                            icon: Icons.phone_outlined,
+                            keyboardType: TextInputType.phone,
+                            validator: (val) {
+                              if (val == null || val.trim().isEmpty) {
+                                return "Nomor HP wajib diisi";
+                              }
+                              if (val.trim().length < 8) {
+                                return "Nomor HP minimal 8 digit";
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          _textField(
+                            controller: _nomorRmCtrl,
+                            label: "Nomor RM (Opsional)",
+                            hint: "Kosongkan jika pasien baru",
+                            icon: Icons.medical_information_outlined,
+                          ),
+                          const SizedBox(height: 16),
+                          _passwordField(
+                            controller: _passwordCtrl,
+                            label: "Kata Sandi",
+                            isObscure: _obscurePassword,
+                            onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
+                            validator: (val) {
+                              if (val == null || val.trim().isEmpty) {
+                                return "Kata sandi wajib diisi";
+                              }
+                              if (val.length < 5) {
+                                return "Kata sandi minimal 5 karakter";
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          _passwordField(
+                            controller: _confirmPasswordCtrl,
+                            label: "Ulangi Kata Sandi",
+                            isObscure: _obscureConfirm,
+                            onToggle: () => setState(() => _obscureConfirm = !_obscureConfirm),
+                            validator: (val) =>
+                                val == null || val.trim().isEmpty ? "Ulangi kata sandi" : null,
+                          ),
+                          const SizedBox(height: 28),
+                          AnimatedPressable(
+                            borderRadius: BorderRadius.circular(14),
+                            onTap: _isLoading ? null : _handleRegister,
+                            child: Container(
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: LuxuryTheme.charcoal,
+                                borderRadius: BorderRadius.circular(14),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: LuxuryTheme.charcoal.withValues(alpha: 0.18),
+                                    blurRadius: 14,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              child: _isLoading
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: LuxuryTheme.pureWhite,
+                                        strokeWidth: 2.0,
+                                      ),
+                                    )
+                                  : const Text(
+                                      "DAFTAR AKUN SEKARANG",
+                                      style: TextStyle(
+                                        color: LuxuryTheme.pureWhite,
+                                        fontSize: 12.5,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1.8,
+                                      ),
+                                    ),
                             ),
                           ),
                         ],
@@ -335,38 +330,92 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-              ),
-            ],
+
+                const SizedBox(height: 22),
+
+                // Bottom Link to Login
+                StaggeredEntrance(
+                  index: 2,
+                  child: Center(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Sudah memiliki akun? ",
+                          style: TextStyle(
+                            color: LuxuryTheme.warmGrey,
+                            fontSize: 13.5,
+                            letterSpacing: -0.2,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Masuk di sini",
+                              style: TextStyle(
+                                color: LuxuryTheme.charcoal,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     ),
-  );
-}
+  ),
+);
+  }
 
   Widget _textField({
     required TextEditingController controller,
     required String label,
     required String hint,
     required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
+    TextInputType? keyboardType,
     String? Function(String?)? validator,
   }) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
-      validator: validator,
-      style: const TextStyle(
-        fontSize: 14.5,
-        color: Color(0xFF1C1C1E),
-        fontWeight: FontWeight.w500,
-      ),
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        hintStyle: const TextStyle(color: Color(0xFFC7C7CC), fontSize: 13),
-        prefixIcon: Icon(icon, size: 20, color: const Color(0xFF0F766E)),
+        prefixIcon: Icon(icon, color: LuxuryTheme.charcoal, size: 20),
+        filled: true,
+        fillColor: LuxuryTheme.alabaster.withValues(alpha: 0.7),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: LuxuryTheme.charcoal.withValues(alpha: 0.1), width: 1.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: LuxuryTheme.charcoal.withValues(alpha: 0.12), width: 1.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.charcoal, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.crimson, width: 1.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.crimson, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
+      validator: validator,
     );
   }
 
@@ -380,24 +429,44 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
       controller: controller,
       obscureText: isObscure,
-      validator: validator,
-      style: const TextStyle(
-        fontSize: 14.5,
-        color: Color(0xFF1C1C1E),
-        fontWeight: FontWeight.w500,
-      ),
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: const Icon(Icons.lock_rounded, size: 20, color: Color(0xFF0F766E)),
+        hintText: "••••••••",
+        prefixIcon: const Icon(Icons.lock_outline_rounded, color: LuxuryTheme.charcoal, size: 20),
+        filled: true,
+        fillColor: LuxuryTheme.alabaster.withValues(alpha: 0.7),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: LuxuryTheme.charcoal.withValues(alpha: 0.1), width: 1.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: LuxuryTheme.charcoal.withValues(alpha: 0.12), width: 1.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.charcoal, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.crimson, width: 1.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.crimson, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         suffixIcon: IconButton(
           icon: Icon(
-            isObscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-            color: const Color(0xFF8E8E93),
+            isObscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+            color: LuxuryTheme.warmGrey,
             size: 20,
           ),
           onPressed: onToggle,
         ),
       ),
+      validator: validator,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import '../helpers/user_info.dart';
 import '../model/pegawai.dart';
 import '../service/pegawai_service.dart';
@@ -54,7 +55,7 @@ class _PegawaiPageState extends State<PegawaiPage>
     super.build(context);
     if (!_isAdmin) {
       return Scaffold(
-        backgroundColor: const Color(0xFFF2F2F7),
+        backgroundColor: LuxuryTheme.alabaster,
         appBar: AppBar(title: const Text("Data Pegawai")),
         body: Center(
           child: Padding(
@@ -63,33 +64,48 @@ class _PegawaiPageState extends State<PegawaiPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  width: 56,
+                  height: 56,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFF9500).withValues(alpha: 0.12),
-                    shape: BoxShape.circle,
+                    color: LuxuryTheme.paleTaupe,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: LuxuryTheme.charcoal.withValues(alpha: 0.12),
+                      width: 1.0,
+                    ),
                   ),
-                  child: const Icon(Icons.lock_person_rounded, size: 48, color: Color(0xFFFF9500)),
+                  child: const Icon(Icons.lock_outline_rounded, size: 28, color: LuxuryTheme.charcoal),
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  "Akses Terbatas",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: -0.3),
+                  "AKSES TERBATAS",
+                  style: TextStyle(
+                    fontFamily: 'serif',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: LuxuryTheme.charcoal,
+                    letterSpacing: 1.2,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 const Text(
                   "Halaman ini hanya dapat diakses oleh Administrator klinik.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Color(0xFF8E8E93), fontSize: 13.5),
+                  style: TextStyle(color: LuxuryTheme.warmGrey, fontSize: 13),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0F766E),
-                    foregroundColor: Colors.white,
+                    backgroundColor: LuxuryTheme.charcoal,
+                    foregroundColor: LuxuryTheme.pureWhite,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    minimumSize: const Size(180, 46),
                   ),
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("Kembali ke Beranda"),
+                  child: const Text(
+                    "KEMBALI KE BERANDA",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12, letterSpacing: 1.5),
+                  ),
                 ),
               ],
             ),
@@ -98,24 +114,23 @@ class _PegawaiPageState extends State<PegawaiPage>
       );
     }
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),
+      backgroundColor: LuxuryTheme.alabaster,
       appBar: AppBar(
         title: const Text("Data Pegawai"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(Icons.refresh_rounded, size: 20),
             tooltip: "Segarkan",
             onPressed: _loadData,
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: const Color(0xFF0F766E),
-        foregroundColor: Colors.white,
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        icon: const Icon(Icons.add_rounded),
-        label: const Text("Tambah Pegawai", style: TextStyle(fontWeight: FontWeight.w600, letterSpacing: -0.2)),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: LuxuryTheme.charcoal,
+        foregroundColor: LuxuryTheme.pureWhite,
+        elevation: 3,
+        shape: const CircleBorder(),
+        tooltip: "Tambah Pegawai",
         onPressed: () async {
           await Navigator.push(
             context,
@@ -123,209 +138,344 @@ class _PegawaiPageState extends State<PegawaiPage>
           );
           _loadData();
         },
+        child: const Icon(Icons.add, size: 24),
       ),
       body: AestheticBackground(
         child: Column(
           children: [
-          // iOS Search Bar
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-            child: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE3E3E8),
-                borderRadius: BorderRadius.circular(11),
-              ),
-              child: TextField(
-                controller: _searchController,
-                style: const TextStyle(
-                  fontSize: 14.5,
-                  color: Color(0xFF0F172A),
-                  letterSpacing: -0.2,
-                ),
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  isDense: true,
-                  hintText: "Cari nama pegawai atau NIP...",
-                  hintStyle: const TextStyle(
-                    fontSize: 13.5,
-                    color: Color(0xFF8E8E93),
-                    letterSpacing: -0.2,
+            // Editorial Luxury Search Bar
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 12, 18, 10),
+              child: Container(
+                height: 48,
+                decoration: BoxDecoration(
+                  color: LuxuryTheme.pureWhite,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: LuxuryTheme.charcoal.withValues(alpha: 0.08),
+                    width: 1.0,
                   ),
-                  prefixIcon: const Icon(
-                    Icons.search_rounded,
-                    color: Color(0xFF8E8E93),
-                    size: 20,
-                  ),
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(
-                            Icons.cancel_rounded,
-                            size: 18,
-                            color: Color(0xFF8E8E93),
-                          ),
-                          onPressed: () {
-                            _searchController.clear();
-                            setState(() => _searchQuery = "");
-                          },
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: LuxuryTheme.charcoal.withValues(alpha: 0.03),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value.toLowerCase().trim();
-                  });
-                },
+                child: TextField(
+                  controller: _searchController,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: LuxuryTheme.charcoal,
+                  ),
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: "Cari nama pegawai atau NIP...",
+                    hintStyle: const TextStyle(
+                      fontFamily: 'serif',
+                      fontStyle: FontStyle.italic,
+                      fontSize: 13,
+                      color: LuxuryTheme.warmGrey,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.search_rounded,
+                      color: LuxuryTheme.charcoal,
+                      size: 20,
+                    ),
+                    suffixIcon: _searchQuery.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(
+                              Icons.close_rounded,
+                              size: 16,
+                              color: LuxuryTheme.charcoal,
+                            ),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() => _searchQuery = "");
+                            },
+                          )
+                        : null,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    filled: false,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value.toLowerCase().trim();
+                    });
+                  },
+                ),
               ),
             ),
-          ),
-          const Divider(height: 0.8, color: Color(0xFFE5E5EA)),
 
-          // Main List View
-          Expanded(
-            child: RefreshIndicator(
-              color: const Color(0xFF0F766E),
-              onRefresh: () async {
-                _loadData();
-              },
-              child: FutureBuilder<List<Pegawai>>(
-                future: _pegawaiFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(color: Color(0xFF0F766E)),
-                    );
-                  }
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
+            // Main List View
+            Expanded(
+              child: RefreshIndicator(
+                color: LuxuryTheme.charcoal,
+                backgroundColor: LuxuryTheme.alabaster,
+                onRefresh: () async {
+                  _loadData();
+                },
+                child: FutureBuilder<List<Pegawai>>(
+                  future: _pegawaiFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(color: LuxuryTheme.charcoal, strokeWidth: 2),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(28.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error_outline_rounded, size: 40, color: LuxuryTheme.crimson),
+                              const SizedBox(height: 14),
+                              Text(
+                                "Terjadi kesalahan saat memuat data:\n${snapshot.error}",
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(color: LuxuryTheme.warmGrey, fontSize: 13),
+                              ),
+                              const SizedBox(height: 18),
+                              ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: LuxuryTheme.charcoal,
+                                  foregroundColor: LuxuryTheme.pureWhite,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  minimumSize: const Size(140, 44),
+                                ),
+                                onPressed: _loadData,
+                                icon: const Icon(Icons.refresh_rounded, size: 16),
+                                label: const Text("COBA LAGI"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.error_outline_rounded, size: 48, color: Color(0xFFDC2626)),
-                            const SizedBox(height: 12),
-                            Text(
-                              "Terjadi kesalahan saat memuat data:\n${snapshot.error}",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(color: Color(0xFF475569), fontSize: 13),
+                            Container(
+                              width: 54,
+                              height: 54,
+                              decoration: BoxDecoration(
+                                color: LuxuryTheme.paleTaupe,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: LuxuryTheme.charcoal.withValues(alpha: 0.12),
+                                  width: 1.0,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.badge_outlined,
+                                size: 26,
+                                color: LuxuryTheme.charcoal,
+                              ),
                             ),
                             const SizedBox(height: 16),
+                            const Text(
+                              "Belum Ada Data Pegawai",
+                              style: TextStyle(
+                                fontFamily: 'serif',
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                                color: LuxuryTheme.charcoal,
+                                letterSpacing: -0.2,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text(
+                              "Daftar pegawai dan staf belum terdaftar di sistem.",
+                              style: TextStyle(fontSize: 12.5, color: LuxuryTheme.warmGrey),
+                            ),
+                            const SizedBox(height: 20),
                             ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF0F766E),
-                                foregroundColor: Colors.white,
-                                minimumSize: const Size(140, 44),
+                                backgroundColor: LuxuryTheme.charcoal,
+                                foregroundColor: LuxuryTheme.pureWhite,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                minimumSize: const Size(160, 44),
                               ),
-                              onPressed: _loadData,
-                              icon: const Icon(Icons.refresh_rounded, size: 18),
-                              label: const Text("Coba Lagi"),
+                              onPressed: () async {
+                                await Navigator.push(
+                                  context,
+                                  SmoothPageRoute(page: const PegawaiForm()),
+                                );
+                                _loadData();
+                              },
+                              icon: const Icon(Icons.add, size: 16),
+                              label: const Text("TAMBAH PEGAWAI"),
                             ),
                           ],
                         ),
-                      ),
-                    );
-                  }
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0284C7).withValues(alpha: 0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.badge_outlined,
-                              size: 48,
-                              color: Color(0xFF0284C7),
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-                          const Text(
-                            "Belum Ada Data Pegawai",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF0F172A),
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          const Text(
-                            "Daftar pegawai dan staf belum terdaftar di sistem.",
-                            style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
-                          ),
-                          const SizedBox(height: 18),
-                          ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF0F766E),
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(160, 44),
-                            ),
-                            onPressed: () async {
-                              await Navigator.push(
-                                context,
-                                SmoothPageRoute(page: const PegawaiForm()),
-                              );
-                              _loadData();
-                            },
-                            icon: const Icon(Icons.add_rounded, size: 18),
-                            label: const Text("Tambah Pegawai"),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
+                      );
+                    }
 
-                  final filteredList = snapshot.data!.where((item) {
-                    if (_searchQuery.isEmpty) return true;
-                    return item.nama.toLowerCase().contains(_searchQuery) ||
-                        item.nip.toLowerCase().contains(_searchQuery);
-                  }).toList();
+                    final filteredList = snapshot.data!.where((item) {
+                      if (_searchQuery.isEmpty) return true;
+                      return item.nama.toLowerCase().contains(_searchQuery) ||
+                          item.nip.toLowerCase().contains(_searchQuery);
+                    }).toList();
 
-                  if (filteredList.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.search_off_rounded, size: 48, color: Color(0xFF94A3B8)),
-                          const SizedBox(height: 12),
-                          Text(
-                            "Tidak ditemukan pegawai dengan kata kunci '$_searchQuery'",
-                            style: const TextStyle(color: Color(0xFF64748B), fontSize: 13),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(top: 10, bottom: 80),
-                    itemCount: filteredList.length,
-                    itemBuilder: (context, index) {
-                      return StaggeredEntrance(
-                        index: index,
-                        child: PegawaiItem(
-                          pegawai: filteredList[index],
-                          onRefresh: _loadData,
+                    if (filteredList.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: LuxuryTheme.paleTaupe,
+                                border: Border.all(
+                                  color: LuxuryTheme.charcoal.withValues(alpha: 0.12),
+                                  width: 1.0,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.search_off_rounded,
+                                size: 24,
+                                color: LuxuryTheme.charcoal,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              "Pegawai Tidak Ditemukan",
+                              style: TextStyle(
+                                fontFamily: 'serif',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: LuxuryTheme.charcoal,
+                                letterSpacing: -0.2,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              "Tidak ada data pegawai dengan kata kunci '$_searchQuery'",
+                              style: const TextStyle(color: LuxuryTheme.warmGrey, fontSize: 12.5),
+                            ),
+                            const SizedBox(height: 16),
+                            TextButton.icon(
+                              onPressed: () {
+                                _searchController.clear();
+                                setState(() => _searchQuery = "");
+                              },
+                              icon: const Icon(Icons.refresh_rounded, size: 16),
+                              label: const Text("RESET PENCARIAN"),
+                              style: TextButton.styleFrom(
+                                foregroundColor: LuxuryTheme.charcoal,
+                                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                              ),
+                            ),
+                          ],
                         ),
                       );
-                    },
-                  );
-                },
+                    }
+
+                    return Column(
+                      children: [
+                        // Section Header Bar
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 14,
+                                    height: 1.0,
+                                    color: LuxuryTheme.metallicGold,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    "STAF & MEDIS",
+                                    style: TextStyle(
+                                      fontSize: 10.5,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 2.0,
+                                      color: LuxuryTheme.warmGrey,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: LuxuryTheme.paleTaupe,
+                                      border: Border.all(
+                                        color: LuxuryTheme.charcoal.withValues(alpha: 0.1),
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "${filteredList.length} ANGGOTA",
+                                      style: const TextStyle(
+                                        fontSize: 9.5,
+                                        fontWeight: FontWeight.w700,
+                                        color: LuxuryTheme.charcoal,
+                                        letterSpacing: 0.8,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 6,
+                                    height: 6,
+                                    color: LuxuryTheme.forestGreen,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    "Status Aktif",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                      color: LuxuryTheme.warmGrey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Card List
+                        Expanded(
+                          child: ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            padding: const EdgeInsets.only(top: 4, bottom: 96),
+                            itemCount: filteredList.length,
+                            itemBuilder: (context, index) {
+                              return StaggeredEntrance(
+                                index: index,
+                                child: PegawaiItem(
+                                  pegawai: filteredList[index],
+                                  onRefresh: _loadData,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

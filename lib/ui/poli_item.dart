@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import '../helpers/poli_helper.dart';
 import '../model/poli.dart';
 import '../widget/animated_pressable.dart';
@@ -17,9 +18,9 @@ class PoliItem extends StatelessWidget {
     final isNumericId = poli.id != null && RegExp(r'^\d+$').hasMatch(poli.id!);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
       child: AnimatedPressable(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
         onTap: () async {
           await Navigator.push(
             context,
@@ -30,34 +31,37 @@ class PoliItem extends StatelessWidget {
           }
         },
         child: Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: LuxuryTheme.pureWhite,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
+            border: Border.all(
+              color: LuxuryTheme.charcoal.withValues(alpha: 0.08),
+              width: 1.0,
+            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 10,
-                offset: const Offset(0, 2),
+                color: LuxuryTheme.charcoal.withValues(alpha: 0.03),
+                blurRadius: 12,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
           child: Row(
             children: [
-              // Specialty Medical Icon Container
+              // Specialty Medical Icon Container with rounded corners
               Container(
-                width: 48,
-                height: 48,
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
-                  color: meta.backgroundColor,
-                  borderRadius: BorderRadius.circular(14),
+                  color: LuxuryTheme.paleTaupe.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 alignment: Alignment.center,
                 child: Icon(
                   meta.icon,
-                  color: meta.primaryColor,
-                  size: 24,
+                  color: LuxuryTheme.charcoal,
+                  size: 22,
                 ),
               ),
               const SizedBox(width: 14),
@@ -75,27 +79,28 @@ class PoliItem extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
+                              fontFamily: 'serif',
                               fontSize: 15.5,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF0F172A),
-                              letterSpacing: -0.3,
+                              fontWeight: FontWeight.w600,
+                              color: LuxuryTheme.charcoal,
+                              letterSpacing: -0.2,
                             ),
                           ),
                         ),
                         if (isNumericId) ...[
-                          const SizedBox(width: 6),
+                          const SizedBox(width: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF2F2F7),
+                              color: LuxuryTheme.paleTaupe.withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
                               "#${poli.id}",
                               style: const TextStyle(
-                                fontSize: 10.5,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF8E8E93),
+                                color: LuxuryTheme.charcoal,
                               ),
                             ),
                           ),
@@ -105,20 +110,20 @@ class PoliItem extends StatelessWidget {
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        // Category Pill Tag
+                        // Category Tag
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                           decoration: BoxDecoration(
-                            color: meta.backgroundColor,
+                            color: LuxuryTheme.paleTaupe.withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             meta.category,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: meta.primaryColor,
-                              letterSpacing: -0.1,
+                              fontWeight: FontWeight.w500,
+                              color: LuxuryTheme.warmGrey,
+                              letterSpacing: 0.2,
                             ),
                           ),
                         ),
@@ -128,13 +133,13 @@ class PoliItem extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(width: 6),
+              const SizedBox(width: 8),
 
-              // iOS Table Disclosure Chevron
+              // Disclosure Chevron
               const Icon(
-                Icons.chevron_right_rounded,
-                size: 22,
-                color: Color(0xFFC7C7CC),
+                Icons.arrow_forward_ios_rounded,
+                size: 13,
+                color: LuxuryTheme.charcoal,
               ),
             ],
           ),

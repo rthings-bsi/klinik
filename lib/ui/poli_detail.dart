@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import '../helpers/poli_helper.dart';
 import '../helpers/user_info.dart';
 import '../model/poli.dart';
@@ -46,7 +47,7 @@ class _PoliDetailState extends State<PoliDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),
+      backgroundColor: LuxuryTheme.alabaster,
       appBar: AppBar(
         title: const Text("Detail Poli"),
       ),
@@ -54,230 +55,262 @@ class _PoliDetailState extends State<PoliDetail> {
         child: FutureBuilder<Poli>(
           future: _poliFuture,
           builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(color: Color(0xFF0F766E)),
-            );
-          }
-          if (snapshot.hasError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline_rounded, size: 48, color: Color(0xFFFF3B30)),
-                    const SizedBox(height: 12),
-                    Text(
-                      "Gagal memuat detail: ${snapshot.error}",
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 13),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0F766E),
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size(130, 44),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(color: LuxuryTheme.charcoal, strokeWidth: 2),
+              );
+            }
+            if (snapshot.hasError) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(28.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error_outline_rounded, size: 40, color: LuxuryTheme.crimson),
+                      const SizedBox(height: 14),
+                      Text(
+                        "Gagal memuat detail: ${snapshot.error}",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: LuxuryTheme.warmGrey, fontSize: 13),
                       ),
-                      onPressed: _loadDetail,
-                      child: const Text("Coba Lagi"),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-          if (!snapshot.hasData) {
-            return const Center(child: Text("Data Poli Tidak Ditemukan"));
-          }
-
-          final poli = snapshot.data!;
-          final meta = PoliHelper.getMeta(poli.namaPoli);
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
-                        blurRadius: 12,
-                        offset: const Offset(0, 3),
+                      const SizedBox(height: 18),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: LuxuryTheme.charcoal,
+                          foregroundColor: LuxuryTheme.pureWhite,
+                          minimumSize: const Size(130, 44),
+                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                        ),
+                        onPressed: _loadDetail,
+                        child: const Text("COBA LAGI"),
                       ),
                     ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "INFORMASI POLIKLINIK",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF8E8E93),
-                              letterSpacing: 0.6,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF34C759).withValues(alpha: 0.12),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.check_circle_rounded, size: 12, color: Color(0xFF34C759)),
-                                SizedBox(width: 4),
-                                Text(
-                                  "Pelayanan Aktif",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF34C759),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                ),
+              );
+            }
+            if (!snapshot.hasData) {
+              return const Center(child: Text("Data Poli Tidak Ditemukan"));
+            }
+
+            final poli = snapshot.data!;
+            final meta = PoliHelper.getMeta(poli.namaPoli);
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(24.0),
+                    decoration: BoxDecoration(
+                      color: LuxuryTheme.pureWhite,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: LuxuryTheme.charcoal.withValues(alpha: 0.08),
+                        width: 1.0,
                       ),
-                      const SizedBox(height: 14),
-                      const Divider(height: 1, color: Color(0xFFE5E5EA)),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Container(
-                            width: 54,
-                            height: 54,
-                            decoration: BoxDecoration(
-                              color: meta.backgroundColor,
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            alignment: Alignment.center,
-                            child: Icon(
-                              meta.icon,
-                              color: meta.primaryColor,
-                              size: 28,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  poli.namaPoli,
-                                  style: const TextStyle(
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xFF0F172A),
-                                    letterSpacing: -0.4,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  meta.category,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: meta.primaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (poli.id != null) ...[
-                        const SizedBox(height: 16),
-                        const Divider(height: 1, color: Color(0xFFE5E5EA)),
-                        const SizedBox(height: 14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: LuxuryTheme.charcoal.withValues(alpha: 0.04),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF2F2F7),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                "Kode Poli: #${poli.id}",
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF8E8E93),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 12,
+                                  height: 1.0,
+                                  color: LuxuryTheme.metallicGold,
                                 ),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  "INFORMASI POLIKLINIK",
+                                  style: TextStyle(
+                                    fontSize: 10.5,
+                                    fontWeight: FontWeight.w700,
+                                    color: LuxuryTheme.warmGrey,
+                                    letterSpacing: 2.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: LuxuryTheme.paleTaupe,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: LuxuryTheme.charcoal.withValues(alpha: 0.12),
+                                  width: 1.0,
+                                ),
+                              ),
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.check, size: 12, color: LuxuryTheme.forestGreen),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    "Pelayanan Aktif",
+                                    style: TextStyle(
+                                      fontSize: 10.5,
+                                      fontWeight: FontWeight.w600,
+                                      color: LuxuryTheme.charcoal,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ],
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-                if (_isAdmin)
-                  Row(
-                    children: [
-                      Expanded(child: _tombolUbah(poli)),
-                      const SizedBox(width: 14),
-                      Expanded(child: _tombolHapus(poli)),
-                    ],
-                  )
-                else
-                  AnimatedPressable(
-                    borderRadius: BorderRadius.circular(14),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        SmoothPageRoute(page: const AntrianForm()),
-                      );
-                    },
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF0F766E),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.confirmation_number_rounded, color: Colors.white, size: 20),
-                          SizedBox(width: 8),
-                          Text(
-                            "Ambil Antrian di Poli Ini",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.2,
+                        const SizedBox(height: 16),
+                        Divider(height: 1, thickness: 1, color: LuxuryTheme.charcoal.withValues(alpha: 0.1)),
+                        const SizedBox(height: 18),
+                        Row(
+                          children: [
+                            Container(
+                              width: 54,
+                              height: 54,
+                              decoration: BoxDecoration(
+                                color: LuxuryTheme.paleTaupe,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: LuxuryTheme.charcoal.withValues(alpha: 0.1),
+                                  width: 1.0,
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Icon(
+                                meta.icon,
+                                color: LuxuryTheme.charcoal,
+                                size: 26,
+                              ),
                             ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    poli.namaPoli,
+                                    style: const TextStyle(
+                                      fontFamily: 'serif',
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w600,
+                                      color: LuxuryTheme.charcoal,
+                                      letterSpacing: -0.3,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    meta.category,
+                                    style: const TextStyle(
+                                      fontSize: 12.5,
+                                      fontWeight: FontWeight.w500,
+                                      color: LuxuryTheme.warmGrey,
+                                      letterSpacing: 0.2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (poli.id != null) ...[
+                          const SizedBox(height: 18),
+                          Divider(height: 1, thickness: 1, color: LuxuryTheme.charcoal.withValues(alpha: 0.1)),
+                          const SizedBox(height: 14),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: LuxuryTheme.paleTaupe.withValues(alpha: 0.5),
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                    color: LuxuryTheme.charcoal.withValues(alpha: 0.1),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Text(
+                                  "Kode Poli: #${poli.id}",
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: LuxuryTheme.charcoal,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
+                      ],
                     ),
                   ),
-              ],
-            ),
-          );
-        },
+                  const SizedBox(height: 24),
+                  if (_isAdmin)
+                    Row(
+                      children: [
+                        Expanded(child: _tombolUbah(poli)),
+                        const SizedBox(width: 14),
+                        Expanded(child: _tombolHapus(poli)),
+                      ],
+                    )
+                  else
+                    AnimatedPressable(
+                      borderRadius: BorderRadius.circular(14),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          SmoothPageRoute(page: const AntrianForm()),
+                        );
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: LuxuryTheme.charcoal,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.confirmation_number_outlined, color: LuxuryTheme.pureWhite, size: 18),
+                            SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                "AMBIL ANTRIAN DI POLI INI",
+                                style: TextStyle(
+                                  color: LuxuryTheme.pureWhite,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1.2,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _tombolUbah(Poli poli) {
     return AnimatedPressable(
@@ -292,22 +325,22 @@ class _PoliDetailState extends State<PoliDetail> {
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: const Color(0xFF007AFF),
+          color: LuxuryTheme.charcoal,
           borderRadius: BorderRadius.circular(14),
         ),
         alignment: Alignment.center,
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.edit_rounded, size: 18, color: Colors.white),
+          children: [
+            Icon(Icons.edit_outlined, size: 17, color: LuxuryTheme.pureWhite),
             SizedBox(width: 8),
             Text(
               "Ubah",
               style: TextStyle(
-                color: Colors.white,
+                color: LuxuryTheme.pureWhite,
                 fontWeight: FontWeight.w600,
-                fontSize: 15,
-                letterSpacing: -0.2,
+                fontSize: 13,
+                letterSpacing: 1.4,
               ),
             ),
           ],
@@ -323,27 +356,34 @@ class _PoliDetailState extends State<PoliDetail> {
         showDialog(
           context: context,
           builder: (dialogContext) => AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             title: const Text(
               "Konfirmasi Hapus",
-              style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: -0.4),
+              style: TextStyle(
+                fontFamily: 'serif',
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
+              ),
             ),
             content: Text(
               "Yakin ingin menghapus data poli \"${poli.namaPoli}\"?",
-              style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 14),
+              style: const TextStyle(color: LuxuryTheme.warmGrey, fontSize: 13.5),
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(dialogContext),
-                child: const Text(
-                  "Batal",
-                  style: TextStyle(color: Color(0xFF8E8E93), fontWeight: FontWeight.w600),
+                style: TextButton.styleFrom(
+                  foregroundColor: LuxuryTheme.charcoal,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text("BATAL"),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF3B30),
-                  foregroundColor: Colors.white,
+                  backgroundColor: LuxuryTheme.crimson,
+                  foregroundColor: LuxuryTheme.pureWhite,
                   elevation: 0,
                   minimumSize: const Size(90, 40),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -361,11 +401,14 @@ class _PoliDetailState extends State<PoliDetail> {
                   } catch (e) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Gagal menghapus: $e")),
+                      SnackBar(
+                        backgroundColor: LuxuryTheme.crimson,
+                        content: Text("Gagal menghapus: $e"),
+                      ),
                     );
                   }
                 },
-                child: const Text("Hapus"),
+                child: const Text("HAPUS"),
               ),
             ],
           ),
@@ -374,22 +417,26 @@ class _PoliDetailState extends State<PoliDetail> {
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: const Color(0xFFFF3B30),
+          color: LuxuryTheme.pureWhite,
           borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: LuxuryTheme.crimson.withValues(alpha: 0.6),
+            width: 1.0,
+          ),
         ),
         alignment: Alignment.center,
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.delete_outline_rounded, size: 18, color: Colors.white),
+          children: [
+            Icon(Icons.delete_outline_rounded, size: 17, color: LuxuryTheme.crimson),
             SizedBox(width: 8),
             Text(
               "Hapus",
               style: TextStyle(
-                color: Colors.white,
+                color: LuxuryTheme.crimson,
                 fontWeight: FontWeight.w600,
-                fontSize: 15,
-                letterSpacing: -0.2,
+                fontSize: 13,
+                letterSpacing: 1.4,
               ),
             ),
           ],

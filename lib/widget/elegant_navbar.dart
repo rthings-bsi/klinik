@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import 'animated_pressable.dart';
 
 class NavBarItem {
@@ -29,87 +30,85 @@ class ElegantNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: const Border(
+        color: LuxuryTheme.alabaster,
+        border: Border(
           top: BorderSide(
-            color: Color(0xFFE5E5EA),
-            width: 0.8,
+            color: LuxuryTheme.charcoal.withValues(alpha: 0.12),
+            width: 1.0,
           ),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, -4),
+            color: LuxuryTheme.charcoal.withValues(alpha: 0.03),
+            blurRadius: 12,
+            offset: const Offset(0, -3),
           ),
         ],
       ),
       child: SafeArea(
         top: false,
-        child: Container(
-          height: 60,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: SizedBox(
+          height: 62,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(items.length, (index) {
               final item = items[index];
               final isSelected = index == currentIndex;
 
               return Expanded(
                 child: AnimatedPressable(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.zero,
                   onTap: () => onTap(index),
-                  child: Center(
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 220),
-                      curve: Curves.easeOutCubic,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Editorial Top Gold Active Indicator Bar
+                      Positioned(
+                        top: 0,
+                        left: 24,
+                        right: 24,
+                        height: 2.0,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 320),
+                          curve: const Cubic(0.25, 0.46, 0.45, 0.94),
+                          color: isSelected
+                              ? LuxuryTheme.metallicGold
+                              : Colors.transparent,
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? const Color(0xFF0F766E).withValues(alpha: 0.12)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AnimatedScale(
-                            scale: isSelected ? 1.08 : 1.0,
-                            duration: const Duration(milliseconds: 200),
-                            curve: Curves.easeOutCubic,
-                            child: Icon(
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6, bottom: 4),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
                               isSelected ? item.activeIcon : item.icon,
                               size: 21,
                               color: isSelected
-                                  ? const Color(0xFF0F766E)
-                                  : const Color(0xFF8E8E93),
+                                  ? LuxuryTheme.charcoal
+                                  : LuxuryTheme.warmGrey,
                             ),
-                          ),
-                          const SizedBox(height: 3),
-                          AnimatedDefaultTextStyle(
-                            duration: const Duration(milliseconds: 200),
-                            curve: Curves.easeOutCubic,
-                            style: TextStyle(
-                              fontSize: 10.5,
-                              fontWeight: isSelected
-                                  ? FontWeight.w600
-                                  : FontWeight.w500,
-                              color: isSelected
-                                  ? const Color(0xFF0F766E)
-                                  : const Color(0xFF8E8E93),
-                              letterSpacing: -0.2,
+                            const SizedBox(height: 3),
+                            AnimatedDefaultTextStyle(
+                              duration: const Duration(milliseconds: 320),
+                              curve: const Cubic(0.25, 0.46, 0.45, 0.94),
+                              style: TextStyle(
+                                fontSize: 10.5,
+                                fontWeight: isSelected
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
+                                color: isSelected
+                                    ? LuxuryTheme.charcoal
+                                    : LuxuryTheme.warmGrey,
+                                letterSpacing: 0.5,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              child: Text(item.label),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            child: Text(item.label),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               );

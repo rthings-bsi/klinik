@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import '../model/pegawai.dart';
 import '../service/pegawai_service.dart';
+import '../widget/animated_pressable.dart';
+import '../widget/aesthetic_background.dart';
 
 class PegawaiUpdateForm extends StatefulWidget {
   final Pegawai pegawai;
@@ -55,9 +58,15 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFF0F766E),
-              onPrimary: Colors.white,
-              onSurface: Color(0xFF0F172A),
+              primary: LuxuryTheme.charcoal,
+              onPrimary: LuxuryTheme.pureWhite,
+              surface: LuxuryTheme.alabaster,
+              onSurface: LuxuryTheme.charcoal,
+            ),
+            datePickerTheme: const DatePickerThemeData(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              headerBackgroundColor: LuxuryTheme.charcoal,
+              headerForegroundColor: LuxuryTheme.pureWhite,
             ),
           ),
           child: child!,
@@ -75,66 +84,71 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),
+      backgroundColor: LuxuryTheme.alabaster,
       appBar: AppBar(
         title: const Text("Ubah Pegawai"),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          padding: const EdgeInsets.all(22),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 10,
-                offset: const Offset(0, 3),
+      body: AestheticBackground(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: LuxuryTheme.alabaster,
+              border: Border.all(
+                color: LuxuryTheme.charcoal.withValues(alpha: 0.14),
+                width: 1.0,
               ),
-            ],
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  "Perbarui Data Pegawai",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1C1C1E),
-                    letterSpacing: -0.3,
-                  ),
+              boxShadow: [
+                BoxShadow(
+                  color: LuxuryTheme.charcoal.withValues(alpha: 0.03),
+                  blurRadius: 14,
+                  offset: const Offset(0, 4),
                 ),
-                const SizedBox(height: 4),
-                const Text(
-                  "Ubah informasi biodata atau kontak pegawai.",
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF8E8E93),
-                    letterSpacing: -0.2,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Divider(height: 1, color: Color(0xFFE5E5EA)),
-                const SizedBox(height: 18),
-                _fieldNip(),
-                const SizedBox(height: 14),
-                _fieldNama(),
-                const SizedBox(height: 14),
-                _fieldTanggalLahir(),
-                const SizedBox(height: 14),
-                _fieldNomorTelepon(),
-                const SizedBox(height: 14),
-                _fieldEmail(),
-                const SizedBox(height: 14),
-                _fieldPassword(),
-                const SizedBox(height: 26),
-                _tombolSimpanPerubahan(),
               ],
+            ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    "Perbarui Data Pegawai",
+                    style: TextStyle(
+                      fontFamily: 'serif',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: LuxuryTheme.charcoal,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    "Ubah informasi biodata atau kontak pegawai.",
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: LuxuryTheme.warmGrey,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  Divider(height: 1, thickness: 1, color: LuxuryTheme.charcoal.withValues(alpha: 0.1)),
+                  const SizedBox(height: 22),
+                  _fieldNip(),
+                  const SizedBox(height: 18),
+                  _fieldNama(),
+                  const SizedBox(height: 18),
+                  _fieldTanggalLahir(),
+                  const SizedBox(height: 18),
+                  _fieldNomorTelepon(),
+                  const SizedBox(height: 18),
+                  _fieldEmail(),
+                  const SizedBox(height: 18),
+                  _fieldPassword(),
+                  const SizedBox(height: 30),
+                  _tombolSimpanPerubahan(),
+                ],
+              ),
             ),
           ),
         ),
@@ -145,9 +159,11 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
   Widget _fieldNip() {
     return TextFormField(
       controller: _nipCtrl,
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: const InputDecoration(
         labelText: "NIP",
-        prefixIcon: Icon(Icons.badge_rounded, color: Color(0xFF0F766E)),
+        hintText: "Contoh: 199001012020011001",
+        prefixIcon: Icon(Icons.badge_outlined, color: LuxuryTheme.charcoal, size: 20),
       ),
       validator: (val) => val == null || val.trim().isEmpty ? "NIP wajib diisi" : null,
     );
@@ -156,9 +172,11 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
   Widget _fieldNama() {
     return TextFormField(
       controller: _namaCtrl,
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: const InputDecoration(
         labelText: "Nama Lengkap",
-        prefixIcon: Icon(Icons.person_rounded, color: Color(0xFF0F766E)),
+        hintText: "Contoh: dr. Budi Setiawan, Sp.A",
+        prefixIcon: Icon(Icons.person_outline_rounded, color: LuxuryTheme.charcoal, size: 20),
       ),
       validator: (val) => val == null || val.trim().isEmpty ? "Nama wajib diisi" : null,
     );
@@ -169,11 +187,13 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
       controller: _tanggalLahirCtrl,
       readOnly: true,
       onTap: _selectDate,
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: InputDecoration(
         labelText: "Tanggal Lahir",
-        prefixIcon: const Icon(Icons.calendar_today_rounded, color: Color(0xFF0F766E)),
+        hintText: "YYYY-MM-DD",
+        prefixIcon: const Icon(Icons.calendar_today_outlined, color: LuxuryTheme.charcoal, size: 20),
         suffixIcon: IconButton(
-          icon: const Icon(Icons.date_range_rounded, color: Color(0xFF0F766E)),
+          icon: const Icon(Icons.date_range_outlined, color: LuxuryTheme.charcoal, size: 20),
           onPressed: _selectDate,
         ),
       ),
@@ -185,9 +205,11 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
     return TextFormField(
       controller: _nomorTeleponCtrl,
       keyboardType: TextInputType.phone,
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: const InputDecoration(
         labelText: "Nomor Telepon",
-        prefixIcon: Icon(Icons.phone_rounded, color: Color(0xFF0F766E)),
+        hintText: "Contoh: 081234567890",
+        prefixIcon: Icon(Icons.phone_outlined, color: LuxuryTheme.charcoal, size: 20),
       ),
       validator: (val) => val == null || val.trim().isEmpty ? "Nomor telepon wajib diisi" : null,
     );
@@ -197,9 +219,11 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
     return TextFormField(
       controller: _emailCtrl,
       keyboardType: TextInputType.emailAddress,
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: const InputDecoration(
         labelText: "Alamat Email",
-        prefixIcon: Icon(Icons.email_rounded, color: Color(0xFF0F766E)),
+        hintText: "Contoh: pegawai@klinik.id",
+        prefixIcon: Icon(Icons.email_outlined, color: LuxuryTheme.charcoal, size: 20),
       ),
       validator: (val) {
         if (val == null || val.trim().isEmpty) return "Email wajib diisi";
@@ -213,11 +237,17 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
     return TextFormField(
       controller: _passwordCtrl,
       obscureText: _obscurePassword,
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: InputDecoration(
         labelText: "Password",
-        prefixIcon: const Icon(Icons.lock_rounded, color: Color(0xFF0F766E)),
+        hintText: "Minimal 6 karakter",
+        prefixIcon: const Icon(Icons.lock_outline_rounded, color: LuxuryTheme.charcoal, size: 20),
         suffixIcon: IconButton(
-          icon: Icon(_obscurePassword ? Icons.visibility_off_rounded : Icons.visibility_rounded),
+          icon: Icon(
+            _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+            color: LuxuryTheme.warmGrey,
+            size: 20,
+          ),
           onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
         ),
       ),
@@ -227,52 +257,61 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
   }
 
   Widget _tombolSimpanPerubahan() {
-    return SizedBox(
-      height: 48,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF007AFF),
-          foregroundColor: Colors.white,
-        ),
-        onPressed: _isLoading
-            ? null
-            : () async {
-                if (_formKey.currentState!.validate()) {
-                  setState(() => _isLoading = true);
+    return AnimatedPressable(
+      borderRadius: BorderRadius.zero,
+      onTap: _isLoading
+          ? null
+          : () async {
+              if (_formKey.currentState!.validate()) {
+                setState(() => _isLoading = true);
 
-                  try {
-                    final updated = Pegawai(
-                      id: widget.pegawai.id,
-                      nip: _nipCtrl.text.trim(),
-                      nama: _namaCtrl.text.trim(),
-                      tanggalLahir: _tanggalLahirCtrl.text.trim(),
-                      nomorTelepon: _nomorTeleponCtrl.text.trim(),
-                      email: _emailCtrl.text.trim(),
-                      password: _passwordCtrl.text.trim(),
-                    );
+                try {
+                  final updated = Pegawai(
+                    id: widget.pegawai.id,
+                    nip: _nipCtrl.text.trim(),
+                    nama: _namaCtrl.text.trim(),
+                    tanggalLahir: _tanggalLahirCtrl.text.trim(),
+                    nomorTelepon: _nomorTeleponCtrl.text.trim(),
+                    email: _emailCtrl.text.trim(),
+                    password: _passwordCtrl.text.trim(),
+                  );
 
-                    await PegawaiService().ubah(updated, widget.pegawai.id ?? '');
+                  await PegawaiService().ubah(updated, widget.pegawai.id ?? '');
 
-                    if (!mounted) return;
-                    Navigator.pop(context, true);
-                  } catch (e) {
-                    setState(() => _isLoading = false);
-                    if (!mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Gagal memperbarui data pegawai: $e")),
-                    );
-                  }
+                  if (!mounted) return;
+                  Navigator.pop(context, true);
+                } catch (e) {
+                  setState(() => _isLoading = false);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: LuxuryTheme.crimson,
+                      content: Text("Gagal memperbarui data pegawai: $e"),
+                    ),
+                  );
                 }
-              },
+              }
+            },
+      child: Container(
+        height: 50,
+        decoration: const BoxDecoration(
+          color: LuxuryTheme.charcoal,
+        ),
+        alignment: Alignment.center,
         child: _isLoading
             ? const SizedBox(
                 width: 20,
                 height: 20,
-                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                child: CircularProgressIndicator(color: LuxuryTheme.pureWhite, strokeWidth: 2),
               )
             : const Text(
-                "Simpan Perubahan",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                "SIMPAN PERUBAHAN",
+                style: TextStyle(
+                  color: LuxuryTheme.pureWhite,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.8,
+                ),
               ),
       ),
     );

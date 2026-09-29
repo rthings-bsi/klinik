@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import '../service/login_service.dart';
 import '../widget/smooth_page_route.dart';
 import '../widget/staggered_entrance.dart';
@@ -30,168 +31,212 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),
+      backgroundColor: LuxuryTheme.alabaster,
       body: AestheticBackground(
         child: SafeArea(
           child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  StaggeredEntrance(
-                    index: 0,
-                    child: Container(
-                      width: 76,
-                      height: 76,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: const Color(0x14000000), width: 0.8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.08),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 24.0),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 440),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    StaggeredEntrance(
+                      index: 0,
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: LuxuryTheme.pureWhite,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: LuxuryTheme.charcoal.withValues(alpha: 0.08),
+                            width: 1.0,
                           ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                          fit: BoxFit.cover,
+                          boxShadow: [
+                            BoxShadow(
+                              color: LuxuryTheme.charcoal.withValues(alpha: 0.06),
+                              blurRadius: 20,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(19),
+                          child: Image.asset(
+                            'assets/images/logo.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 18),
-                  StaggeredEntrance(
-                    index: 1,
-                    child: Column(
-                      children: const [
-                        Text(
-                          "Klinik App",
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1C1C1E),
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "Sistem Manajemen Layanan Kesehatan",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF8E8E93),
-                            letterSpacing: -0.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 28),
-                  StaggeredEntrance(
-                    index: 2,
-                    child: Container(
-                      padding: const EdgeInsets.all(22.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.04),
-                            blurRadius: 18,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
+                    const SizedBox(height: 20),
+                    StaggeredEntrance(
+                      index: 1,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          _usernameTextField(),
-                          const SizedBox(height: 16),
-                          _passwordTextField(),
-                          const SizedBox(height: 24),
-                          _tombolLogin(),
-                          const SizedBox(height: 12),
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: const Color(0xFF0F766E),
-                              side: const BorderSide(color: Color(0xFF0F766E), width: 1.2),
-                              minimumSize: const Size(double.infinity, 48),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
+                          const Text(
+                            "Klinik App",
+                            style: TextStyle(
+                              fontFamily: 'serif',
+                              fontSize: 32,
+                              fontWeight: FontWeight.w400,
+                              color: LuxuryTheme.charcoal,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 24,
+                                height: 1.0,
+                                color: LuxuryTheme.metallicGold,
+                              ),
+                              const SizedBox(width: 10),
+                              const Flexible(
+                                child: Text(
+                                  "SISTEM MANAJEMEN KLINIK",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                    color: LuxuryTheme.warmGrey,
+                                    letterSpacing: 2.2,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Container(
+                                width: 24,
+                                height: 1.0,
+                                color: LuxuryTheme.metallicGold,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    StaggeredEntrance(
+                      index: 2,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 26.0, vertical: 28.0),
+                        decoration: BoxDecoration(
+                          color: LuxuryTheme.pureWhite,
+                          borderRadius: BorderRadius.circular(22),
+                          border: Border.all(
+                            color: LuxuryTheme.charcoal.withValues(alpha: 0.08),
+                            width: 1.0,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: LuxuryTheme.charcoal.withValues(alpha: 0.04),
+                              blurRadius: 24,
+                              offset: const Offset(0, 8),
+                            ),
+                            BoxShadow(
+                              color: LuxuryTheme.charcoal.withValues(alpha: 0.02),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _usernameTextField(),
+                            const SizedBox(height: 20),
+                            _passwordTextField(),
+                            const SizedBox(height: 30),
+                            _tombolLogin(),
+                            const SizedBox(height: 14),
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: LuxuryTheme.charcoal,
+                                side: BorderSide(
+                                  color: LuxuryTheme.charcoal.withValues(alpha: 0.2),
+                                  width: 1.0,
+                                ),
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  SmoothPageRoute(page: const RegisterPage()),
+                                );
+                              },
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.person_add_outlined, size: 16),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    "Daftar Akun Baru",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                SmoothPageRoute(page: const RegisterPage()),
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.person_add_rounded, size: 18),
-                                SizedBox(width: 8),
-                                Text(
-                                  "Daftar Akun Baru",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: -0.2,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  StaggeredEntrance(
-                    index: 3,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF0F766E).withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: const Color(0xFF0F766E).withValues(alpha: 0.15), width: 0.6),
-                      ),
-                      child: const Text(
-                        "Akun bawaan: admin / admin",
-                        style: TextStyle(
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF0F766E),
-                          letterSpacing: -0.2,
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _usernameTextField() {
     return TextFormField(
       controller: _usernameCtrl,
-      decoration: const InputDecoration(
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
+      decoration: InputDecoration(
         labelText: "Username",
         hintText: "Username, NIP, atau Email",
-        prefixIcon: Icon(Icons.person_rounded, color: Color(0xFF0F766E)),
+        prefixIcon: const Icon(Icons.person_outline_rounded, color: LuxuryTheme.charcoal, size: 20),
+        filled: true,
+        fillColor: LuxuryTheme.alabaster.withValues(alpha: 0.7),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: LuxuryTheme.charcoal.withValues(alpha: 0.1), width: 1.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: LuxuryTheme.charcoal.withValues(alpha: 0.12), width: 1.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.charcoal, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.crimson, width: 1.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.crimson, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
@@ -206,14 +251,39 @@ class _LoginState extends State<Login> {
     return TextFormField(
       controller: _passwordCtrl,
       obscureText: _obscurePassword,
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Masukkan password",
-        prefixIcon: const Icon(Icons.lock_rounded, color: Color(0xFF0F766E)),
+        prefixIcon: const Icon(Icons.lock_outline_rounded, color: LuxuryTheme.charcoal, size: 20),
+        filled: true,
+        fillColor: LuxuryTheme.alabaster.withValues(alpha: 0.7),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: LuxuryTheme.charcoal.withValues(alpha: 0.1), width: 1.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: LuxuryTheme.charcoal.withValues(alpha: 0.12), width: 1.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.charcoal, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.crimson, width: 1.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: LuxuryTheme.crimson, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         suffixIcon: IconButton(
           icon: Icon(
-            _obscurePassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-            color: const Color(0xFF8E8E93),
+            _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+            color: LuxuryTheme.warmGrey,
+            size: 20,
           ),
           onPressed: () {
             setState(() {
@@ -233,11 +303,15 @@ class _LoginState extends State<Login> {
 
   Widget _tombolLogin() {
     return SizedBox(
-      height: 48,
+      height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF0F766E),
-          foregroundColor: Colors.white,
+          backgroundColor: LuxuryTheme.charcoal,
+          foregroundColor: LuxuryTheme.pureWhite,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          elevation: 2,
         ),
         onPressed: _isLoading
             ? null
@@ -267,18 +341,27 @@ class _LoginState extends State<Login> {
                     showDialog(
                       context: context,
                       builder: (dialogCtx) => AlertDialog(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                        backgroundColor: LuxuryTheme.pureWhite,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(
+                            color: LuxuryTheme.charcoal.withValues(alpha: 0.1),
+                            width: 1.0,
+                          ),
+                        ),
                         title: const Text("Gagal Masuk"),
                         content: const Text("Username atau password yang dimasukkan salah."),
                         actions: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF0F766E),
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(80, 40),
+                              backgroundColor: LuxuryTheme.charcoal,
+                              foregroundColor: LuxuryTheme.pureWhite,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                             onPressed: () => Navigator.pop(dialogCtx),
-                            child: const Text("OK"),
+                            child: const Text("Tutup"),
                           ),
                         ],
                       ),
@@ -288,16 +371,17 @@ class _LoginState extends State<Login> {
               },
         child: _isLoading
             ? const SizedBox(
-                height: 20,
                 width: 20,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ),
+                height: 20,
+                child: CircularProgressIndicator(color: LuxuryTheme.pureWhite, strokeWidth: 2),
               )
             : const Text(
                 "Masuk",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 2.0,
+                ),
               ),
       ),
     );

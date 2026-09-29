@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import '../model/pegawai.dart';
 import '../widget/animated_pressable.dart';
 import '../widget/smooth_page_route.dart';
@@ -13,7 +14,7 @@ class PegawaiItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
       child: AnimatedPressable(
         borderRadius: BorderRadius.circular(16),
         onTap: () async {
@@ -26,16 +27,19 @@ class PegawaiItem extends StatelessWidget {
           }
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: LuxuryTheme.pureWhite,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
+            border: Border.all(
+              color: LuxuryTheme.charcoal.withValues(alpha: 0.08),
+              width: 1.0,
+            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
+                color: LuxuryTheme.charcoal.withValues(alpha: 0.03),
+                blurRadius: 12,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -45,12 +49,13 @@ class PegawaiItem extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF007AFF).withValues(alpha: 0.12),
+                  color: LuxuryTheme.paleTaupe.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(12),
                 ),
+                alignment: Alignment.center,
                 child: const Icon(
-                  Icons.badge_rounded,
-                  color: Color(0xFF007AFF),
+                  Icons.badge_outlined,
+                  color: LuxuryTheme.charcoal,
                   size: 22,
                 ),
               ),
@@ -62,28 +67,32 @@ class PegawaiItem extends StatelessWidget {
                     Text(
                       pegawai.nama,
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontFamily: 'serif',
+                        fontSize: 15.5,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1C1C1E),
-                        letterSpacing: -0.3,
+                        color: LuxuryTheme.charcoal,
+                        letterSpacing: -0.2,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 5),
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF007AFF).withValues(alpha: 0.1),
+                            color: LuxuryTheme.paleTaupe.withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: LuxuryTheme.charcoal.withValues(alpha: 0.1),
+                              width: 1.0,
+                            ),
                           ),
                           child: Text(
                             "NIP: ${pegawai.nip}",
                             style: const TextStyle(
-                              fontSize: 11.5,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF007AFF),
-                              letterSpacing: -0.2,
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
+                              color: LuxuryTheme.charcoal,
                             ),
                           ),
                         ),
@@ -93,9 +102,9 @@ class PegawaiItem extends StatelessWidget {
                             pegawai.email,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF8E8E93),
-                              letterSpacing: -0.2,
+                              fontSize: 11.5,
+                              color: LuxuryTheme.warmGrey,
+                              letterSpacing: 0.1,
                             ),
                           ),
                         ),
@@ -104,10 +113,11 @@ class PegawaiItem extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(width: 8),
               const Icon(
-                Icons.chevron_right_rounded,
-                size: 20,
-                color: Color(0xFFC7C7CC),
+                Icons.arrow_forward_ios_rounded,
+                size: 13,
+                color: LuxuryTheme.charcoal,
               ),
             ],
           ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import '../helpers/luxury_theme.dart';
 import '../model/poli.dart';
 import '../service/poli_service.dart';
+import '../widget/animated_pressable.dart';
 import '../widget/smooth_page_route.dart';
+import '../widget/aesthetic_background.dart';
 import 'poli_detail.dart';
 
 class PoliForm extends StatefulWidget {
@@ -25,56 +28,61 @@ class _PoliFormState extends State<PoliForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),
+      backgroundColor: LuxuryTheme.alabaster,
       appBar: AppBar(
         title: const Text("Tambah Poli"),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          padding: const EdgeInsets.all(22),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: const Color(0xFFE5E5EA), width: 0.8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 10,
-                offset: const Offset(0, 3),
+      body: AestheticBackground(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: LuxuryTheme.alabaster,
+              border: Border.all(
+                color: LuxuryTheme.charcoal.withValues(alpha: 0.14),
+                width: 1.0,
               ),
-            ],
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  "Formulir Data Poliklinik",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1C1C1E),
-                    letterSpacing: -0.3,
-                  ),
+              boxShadow: [
+                BoxShadow(
+                  color: LuxuryTheme.charcoal.withValues(alpha: 0.03),
+                  blurRadius: 14,
+                  offset: const Offset(0, 4),
                 ),
-                const SizedBox(height: 4),
-                const Text(
-                  "Masukkan nama ruangan atau spesialisasi poli baru.",
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF8E8E93),
-                    letterSpacing: -0.2,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Divider(height: 1, color: Color(0xFFE5E5EA)),
-                const SizedBox(height: 20),
-                _fieldNamaPoli(),
-                const SizedBox(height: 26),
-                _tombolSimpan(),
               ],
+            ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    "Formulir Data Poliklinik",
+                    style: TextStyle(
+                      fontFamily: 'serif',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: LuxuryTheme.charcoal,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    "Masukkan nama ruangan atau spesialisasi poli baru.",
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: LuxuryTheme.warmGrey,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  Divider(height: 1, thickness: 1, color: LuxuryTheme.charcoal.withValues(alpha: 0.1)),
+                  const SizedBox(height: 22),
+                  _fieldNamaPoli(),
+                  const SizedBox(height: 30),
+                  _tombolSimpan(),
+                ],
+              ),
             ),
           ),
         ),
@@ -85,10 +93,11 @@ class _PoliFormState extends State<PoliForm> {
   Widget _fieldNamaPoli() {
     return TextFormField(
       controller: _namaPoliCtrl,
+      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
       decoration: const InputDecoration(
         labelText: "Nama Poli",
         hintText: "Contoh: Poli Gigi, Poli Anak",
-        prefixIcon: Icon(Icons.meeting_room_rounded, color: Color(0xFF0F766E)),
+        prefixIcon: Icon(Icons.meeting_room_outlined, color: LuxuryTheme.charcoal, size: 20),
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
@@ -100,50 +109,59 @@ class _PoliFormState extends State<PoliForm> {
   }
 
   Widget _tombolSimpan() {
-    return SizedBox(
-      height: 48,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF0F766E),
-          foregroundColor: Colors.white,
-        ),
-        onPressed: _isLoading
-            ? null
-            : () async {
-                if (_formKey.currentState!.validate()) {
+    return AnimatedPressable(
+      borderRadius: BorderRadius.zero,
+      onTap: _isLoading
+          ? null
+          : () async {
+              if (_formKey.currentState!.validate()) {
+                setState(() {
+                  _isLoading = true;
+                });
+
+                try {
+                  Poli poli = Poli(namaPoli: _namaPoliCtrl.text.trim());
+                  final savedPoli = await PoliService().simpan(poli);
+
+                  if (!mounted) return;
+                  Navigator.pushReplacement(
+                    context,
+                    SmoothPageRoute(page: PoliDetail(poli: savedPoli)),
+                  );
+                } catch (e) {
                   setState(() {
-                    _isLoading = true;
+                    _isLoading = false;
                   });
-
-                  try {
-                    Poli poli = Poli(namaPoli: _namaPoliCtrl.text.trim());
-                    final savedPoli = await PoliService().simpan(poli);
-
-                    if (!mounted) return;
-                    Navigator.pushReplacement(
-                      context,
-                      SmoothPageRoute(page: PoliDetail(poli: savedPoli)),
-                    );
-                  } catch (e) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    if (!mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Gagal menyimpan data: $e")),
-                    );
-                  }
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: LuxuryTheme.crimson,
+                      content: Text("Gagal menyimpan data: $e"),
+                    ),
+                  );
                 }
-              },
+              }
+            },
+      child: Container(
+        height: 50,
+        decoration: const BoxDecoration(
+          color: LuxuryTheme.charcoal,
+        ),
+        alignment: Alignment.center,
         child: _isLoading
             ? const SizedBox(
                 width: 20,
                 height: 20,
-                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                child: CircularProgressIndicator(color: LuxuryTheme.pureWhite, strokeWidth: 2),
               )
             : const Text(
-                "Simpan Data",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                "SIMPAN DATA",
+                style: TextStyle(
+                  color: LuxuryTheme.pureWhite,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.8,
+                ),
               ),
       ),
     );

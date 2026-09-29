@@ -120,8 +120,8 @@ class PoliHelper {
     } else {
       return const PoliMeta(
         icon: Icons.medical_services_rounded,
-        primaryColor: Color(0xFF0F766E), // Teal 700
-        backgroundColor: Color(0xFFF0FDFA), // Teal 50
+        primaryColor: Color(0xFF6750A4), // MD3 Violet Primary
+        backgroundColor: Color(0xFFF3EDF7), // MD3 Surface Container
         category: "Pelayanan Medis Umum",
         location: "Gedung A • Lt. 1",
       );
