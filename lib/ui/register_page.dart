@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../helpers/luxury_theme.dart';
+import '../model/pasien.dart';
 import '../model/user.dart';
+import '../service/pasien_service.dart';
 import '../service/user_service.dart';
 import '../widget/animated_pressable.dart';
 import '../widget/staggered_entrance.dart';
@@ -18,20 +20,36 @@ class _RegisterPageState extends State<RegisterPage> {
   final _usernameCtrl = TextEditingController();
   final _namaCtrl = TextEditingController();
   final _nomorTeleponCtrl = TextEditingController();
-  final _nomorRmCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
   final _confirmPasswordCtrl = TextEditingController();
 
+  String _autoNomorRm = "";
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAutoNomorRm();
+  }
+
+  Future<void> _loadAutoNomorRm() async {
+    try {
+      final rm = await PasienService().generateNomorRm();
+      if (mounted) {
+        setState(() {
+          _autoNomorRm = rm;
+        });
+      }
+    } catch (_) {}
+  }
 
   @override
   void dispose() {
     _usernameCtrl.dispose();
     _namaCtrl.dispose();
     _nomorTeleponCtrl.dispose();
-    _nomorRmCtrl.dispose();
     _passwordCtrl.dispose();
     _confirmPasswordCtrl.dispose();
     super.dispose();
@@ -55,16 +73,31 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() => _isLoading = true);
 
     try {
+      String nomorRm = _autoNomorRm;
+      if (nomorRm.isEmpty) {
+        nomorRm = await PasienService().generateNomorRm();
+      }
+
       final newUser = User(
         username: _usernameCtrl.text.trim(),
         nama: _namaCtrl.text.trim(),
         nomorTelepon: _nomorTeleponCtrl.text.trim(),
-        nomorRm: _nomorRmCtrl.text.trim().isNotEmpty ? _nomorRmCtrl.text.trim() : null,
+        nomorRm: nomorRm,
         password: _passwordCtrl.text.trim(),
         role: "Pasien",
       );
 
       await UserService().register(newUser);
+
+      // Auto-register into patient directory
+      final newPasien = Pasien(
+        nomorRm: nomorRm,
+        nama: _namaCtrl.text.trim(),
+        tanggalLahir: DateTime.now().toIso8601String().substring(0, 10),
+        nomorTelepon: _nomorTeleponCtrl.text.trim(),
+        alamat: "-",
+      );
+      await PasienService().simpan(newPasien);
 
       if (!mounted) return;
       setState(() => _isLoading = false);
@@ -74,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: LuxuryTheme.charcoal,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          content: const Text("Akun berhasil didaftarkan. Silakan masuk."),
+          content: Text("Akun berhasil didaftarkan dengan No. RM: $nomorRm. Silakan masuk."),
         ),
       );
 
@@ -256,11 +289,80 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          _textField(
-                            controller: _nomorRmCtrl,
-                            label: "Nomor RM (Opsional)",
-                            hint: "Kosongkan jika pasien baru",
-                            icon: Icons.medical_information_outlined,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: LuxuryTheme.paleTaupe.withValues(alpha: 0.35),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: LuxuryTheme.charcoal.withValues(alpha: 0.1),
+                                width: 1.0,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: LuxuryTheme.pureWhite,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Icon(
+                                    Icons.badge_outlined,
+                                    size: 18,
+                                    color: LuxuryTheme.charcoal,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Nomor Rekam Medis (No. RM)",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: LuxuryTheme.warmGrey,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        _autoNomorRm.isNotEmpty
+                                            ? _autoNomorRm
+                                            : "Dibuat otomatis oleh sistem",
+                                        style: const TextStyle(
+                                          fontSize: 13.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: LuxuryTheme.charcoal,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: LuxuryTheme.pureWhite,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: LuxuryTheme.metallicGold.withValues(alpha: 0.5),
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "OTOMATIS",
+                                    style: TextStyle(
+                                      fontSize: 9.5,
+                                      fontWeight: FontWeight.bold,
+                                      color: LuxuryTheme.charcoal,
+                                      letterSpacing: 0.8,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 16),
                           _passwordField(

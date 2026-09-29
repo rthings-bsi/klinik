@@ -1,4 +1,5 @@
 import '../helpers/user_info.dart';
+import 'pasien_service.dart';
 import 'pegawai_service.dart';
 import 'user_service.dart';
 
@@ -49,6 +50,15 @@ class LoginService {
         await UserInfo().setNomorTelepon(user.nomorTelepon);
         if (user.nomorRm != null && user.nomorRm!.isNotEmpty) {
           await UserInfo().setNomorRm(user.nomorRm!);
+        } else if (user.role.toLowerCase() == 'pasien') {
+          final pasiens = await PasienService().listData();
+          final match = pasiens.where((p) =>
+              p.nama.toLowerCase().trim() == user.nama.toLowerCase().trim() ||
+              p.nomorTelepon.trim() == user.nomorTelepon.trim()).firstOrNull;
+          final assignedRm = match?.nomorRm ?? await PasienService().generateNomorRm();
+          user.nomorRm = assignedRm;
+          await UserService().updateUser(user);
+          await UserInfo().setNomorRm(assignedRm);
         }
         return true;
       }

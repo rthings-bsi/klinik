@@ -25,6 +25,21 @@ class _PasienFormState extends State<PasienForm> {
   bool _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    _initNomorRm();
+  }
+
+  Future<void> _initNomorRm() async {
+    final autoRm = await PasienService().generateNomorRm();
+    if (mounted && _nomorRmCtrl.text.isEmpty) {
+      setState(() {
+        _nomorRmCtrl.text = autoRm;
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _nomorRmCtrl.dispose();
     _namaCtrl.dispose();
@@ -143,11 +158,26 @@ class _PasienFormState extends State<PasienForm> {
   Widget _fieldNomorRm() {
     return TextFormField(
       controller: _nomorRmCtrl,
-      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
-      decoration: const InputDecoration(
-        labelText: "Nomor Rekam Medis (RM)",
-        hintText: "Contoh: RM-2024-004",
-        prefixIcon: Icon(Icons.assignment_outlined, color: LuxuryTheme.charcoal, size: 20),
+      readOnly: true,
+      style: const TextStyle(
+        color: LuxuryTheme.charcoal,
+        fontSize: 14.5,
+        fontWeight: FontWeight.w600,
+      ),
+      decoration: InputDecoration(
+        labelText: "Nomor Rekam Medis (RM Otomatis)",
+        hintText: "Otomatis di-generate sistem",
+        prefixIcon: const Icon(Icons.assignment_outlined, color: LuxuryTheme.charcoal, size: 20),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.refresh_rounded, color: LuxuryTheme.charcoal, size: 20),
+          tooltip: "Generate Ulang No. RM",
+          onPressed: () async {
+            final autoRm = await PasienService().generateNomorRm();
+            setState(() {
+              _nomorRmCtrl.text = autoRm;
+            });
+          },
+        ),
       ),
       validator: (val) => val == null || val.trim().isEmpty ? "Nomor RM wajib diisi" : null,
     );

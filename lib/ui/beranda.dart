@@ -211,7 +211,18 @@ class _BerandaDashboardViewState extends State<BerandaDashboardView>
     final isAdmin = await UserInfo().isAdmin();
     final nama = await UserInfo().getNama();
     final username = await UserInfo().getUsername();
-    final rm = await UserInfo().getNomorRm();
+    String? rm = await UserInfo().getNomorRm();
+
+    if (!isAdmin && (rm == null || rm.isEmpty || rm == "-" || rm == "RM-BARU")) {
+      final pasiens = await PasienService().listData();
+      final match = pasiens.where((p) =>
+          p.nama.toLowerCase().trim() == (nama ?? "").toLowerCase().trim()).firstOrNull;
+      if (match != null && match.nomorRm.isNotEmpty) {
+        rm = match.nomorRm;
+        await UserInfo().setNomorRm(rm);
+      }
+    }
+
     final name = (nama != null && nama.isNotEmpty)
         ? nama
         : (username != null && username.isNotEmpty ? username : "Pengguna");

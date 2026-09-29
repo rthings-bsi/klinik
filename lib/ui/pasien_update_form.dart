@@ -153,7 +153,12 @@ class _PasienUpdateFormState extends State<PasienUpdateForm> {
   Widget _fieldNomorRm() {
     return TextFormField(
       controller: _nomorRmCtrl,
-      style: const TextStyle(color: LuxuryTheme.charcoal, fontSize: 14.5),
+      readOnly: true,
+      style: const TextStyle(
+        color: LuxuryTheme.charcoal,
+        fontSize: 14.5,
+        fontWeight: FontWeight.w600,
+      ),
       decoration: const InputDecoration(
         labelText: "Nomor Rekam Medis (RM)",
         prefixIcon: Icon(Icons.assignment_outlined, color: LuxuryTheme.charcoal, size: 20),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../helpers/luxury_theme.dart';
 import '../helpers/user_info.dart';
+import '../service/pasien_service.dart';
 import '../widget/animated_pressable.dart';
 import '../widget/smooth_page_route.dart';
 import '../widget/staggered_entrance.dart';
@@ -40,8 +41,18 @@ class _ProfileViewState extends State<ProfileView>
     final isAdmin = await UserInfo().isAdmin();
     final username = await UserInfo().getUsername() ?? "user";
     final nama = await UserInfo().getNama();
-    final rm = await UserInfo().getNomorRm();
+    String? rm = await UserInfo().getNomorRm();
     final phone = await UserInfo().getNomorTelepon();
+
+    if (!isAdmin && (rm == null || rm.isEmpty || rm == "-" || rm == "RM-BARU")) {
+      final pasiens = await PasienService().listData();
+      final match = pasiens.where((p) =>
+          p.nama.toLowerCase().trim() == (nama ?? "").toLowerCase().trim() ||
+          p.nomorTelepon.trim() == (phone ?? "").trim()).firstOrNull;
+      final assignedRm = match?.nomorRm ?? await PasienService().generateNomorRm();
+      await UserInfo().setNomorRm(assignedRm);
+      rm = assignedRm;
+    }
 
     if (mounted) {
       setState(() {

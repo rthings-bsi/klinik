@@ -63,6 +63,15 @@ class UserService {
     return user;
   }
 
+  Future<void> updateUser(User user) async {
+    await _saveLocalUser(user);
+    try {
+      if (user.id != null) {
+        await _api.put('users/${user.id}', user.toJson());
+      }
+    } catch (_) {}
+  }
+
   Future<User?> authenticate(String username, String password) async {
     final allUsers = await listData();
     for (final u in allUsers) {
